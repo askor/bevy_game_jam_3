@@ -30,6 +30,7 @@ dev = [
 bevy = { version = "0.10" }
 bevy_asset_loader = { version = "0.15" }
 rand = { version = "0.8.3" }
+bevy_rapier3d = "*"
 
 # keep the following in sync with Bevy's dependencies
 winit = { version = "0.28", default-features = false }
