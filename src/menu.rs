@@ -5,8 +5,6 @@ use bevy::prelude::*;
 
 pub struct MenuPlugin;
 
-/// This plugin is responsible for the game menu (containing only one button...)
-/// The menu is only drawn during the State `GameState::Menu` and is removed when that state is exited
 impl Plugin for MenuPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<ButtonColors>()
@@ -31,12 +29,15 @@ impl Default for ButtonColors {
     }
 }
 
+#[derive(Component)]
+struct MenuCamera;
+
 fn setup_menu(
     mut commands: Commands,
     font_assets: Res<FontAssets>,
     button_colors: Res<ButtonColors>,
 ) {
-    commands.spawn(Camera2dBundle::default());
+    commands.spawn((Camera2dBundle::default(), MenuCamera));
     commands
         .spawn(ButtonBundle {
             style: Style {
@@ -84,6 +85,11 @@ fn click_play_button(
     }
 }
 
-fn cleanup_menu(mut commands: Commands, button: Query<Entity, With<Button>>) {
+fn cleanup_menu(
+    mut commands: Commands,
+    button: Query<Entity, With<Button>>,
+    camera: Query<Entity, With<MenuCamera>>,
+) {
     commands.entity(button.single()).despawn_recursive();
+    commands.entity(camera.single()).despawn_recursive();
 }
