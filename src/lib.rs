@@ -36,10 +36,10 @@ impl Plugin for GamePlugin {
             .add_plugin(EnvironmentPlugin)
             ;
 
-        #[cfg(debug_assertions)]
-        {
-            app.add_plugin(FrameTimeDiagnosticsPlugin::default())
-                .add_plugin(LogDiagnosticsPlugin::default());
-        }
+        // #[cfg(debug_assertions)]
+        // {
+        //     app.add_plugin(FrameTimeDiagnosticsPlugin::default())
+        //         .add_plugin(LogDiagnosticsPlugin::default());
+        // }
     }
 }
