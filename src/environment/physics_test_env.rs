@@ -18,7 +18,7 @@ fn setup (
 ) {
     let box_dims = create_physical_box(100., 1., 100.);
     
-    // cube
+    // Ground
     commands.spawn((PbrBundle {
         mesh: meshes.add(box_dims.1),
         material: materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
@@ -40,6 +40,20 @@ fn setup (
         Collider::ball(1.),
         Restitution::new(1.),
         RigidBody::Dynamic,
+    ));
+
+    let box_dims = create_physical_box(100., 1., 100.);
+    
+    // cube
+    commands.spawn((PbrBundle {
+        mesh: meshes.add(box_dims.1),
+        material: materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
+        transform: Transform::from_xyz(0.0, -4., 0.0),
+        ..default()
+        },
+        box_dims.0,
+        RigidBody::Fixed,
+        Restitution::new(1.0)
     ));
 
     // light
