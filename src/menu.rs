@@ -1,3 +1,4 @@
+#![allow(clippy::too_many_arguments, clippy::type_complexity)]
 use crate::loading::FontAssets;
 use crate::GameState;
 use bevy::prelude::*;
