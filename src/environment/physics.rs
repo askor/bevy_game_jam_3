@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 
-use crate::GameState;
+use crate::AppState;
 
 pub struct PhysicsPlugin;
 
@@ -10,7 +10,7 @@ impl Plugin for PhysicsPlugin {
         app
             .add_plugin(RapierPhysicsPlugin::<NoUserData>::default())
             .add_plugin(RapierDebugRenderPlugin::default())
-            .add_system(print_sensor_collison.in_set(OnUpdate(GameState::Playing)))
+            // .add_system(print_sensor_collison.in_set(OnUpdate(AppState::Playing)))
             ;
     }
 }

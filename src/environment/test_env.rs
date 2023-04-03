@@ -1,12 +1,12 @@
 use bevy::prelude::*;
 
-use crate::GameState;
+use crate::AppState;
 
 pub struct TestEnvironmentPlugin;
 
 impl Plugin for TestEnvironmentPlugin {
     fn build(&self, app: &mut App) {
-        app.add_system(setup.in_schedule(OnEnter(GameState::Playing)));
+        app.add_system(setup.in_schedule(OnEnter(AppState::Playing)));
     }
 }
 

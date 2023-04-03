@@ -2,14 +2,14 @@ use bevy::prelude::*;
 use bevy::ecs::event::{Events, ManualEventReader};
 use bevy::input::mouse::MouseMotion;
 use bevy::window::{CursorGrabMode, PrimaryWindow};
-use crate::GameState;
+use crate::AppState;
 
 pub struct PlayerPlugin;
 
 impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut App) {
         app
-        .add_system(setup.in_schedule(OnEnter(GameState::Playing)))
+        .add_system(setup.in_schedule(OnEnter(AppState::Playing)))
         .add_plugin(NoCameraPlayerPlugin)
         ;
     }

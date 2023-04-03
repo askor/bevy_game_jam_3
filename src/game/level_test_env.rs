@@ -3,11 +3,16 @@ use bevy_rapier3d::prelude::*;
 
 use crate::AppState;
 
-pub struct PhysicsTestEnvironmentPlugin;
+use super::gameplay_elements::{Goal, GolfBall};
 
-impl Plugin for PhysicsTestEnvironmentPlugin {
+pub struct LevelTestEnvironmentPlugin;
+
+impl Plugin for LevelTestEnvironmentPlugin {
     fn build(&self, app: &mut App) {
-        app.add_system(setup.in_schedule(OnEnter(AppState::Playing)));
+        app
+            .add_system(setup
+                .in_schedule(OnEnter(AppState::Playing))
+            );
     }
 }
 
@@ -40,6 +45,7 @@ fn setup (
         Collider::ball(1.),
         Restitution::new(1.),
         RigidBody::Dynamic,
+        GolfBall,
     ));
 
     let goals_dims = create_physical_box(2., 2., 2.);
@@ -56,6 +62,7 @@ fn setup (
         Restitution::new(1.0),
         Sensor,
         ActiveEvents::COLLISION_EVENTS,
+        Goal,
     ));
 
     // light
