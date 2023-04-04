@@ -51,20 +51,27 @@ fn save_scene_system(
 ) {
     info!("Saving!");
 
-    let mut scene_world = World::new();
+    // let mut scene_world = World::new();
     
     let type_registry = world.resource::<AppTypeRegistry>().clone();
-    let mut builder = DynamicSceneBuilder::from_world_with_type_registry(&scene_world, type_registry.clone());
-
+    
+    info!("After builder");
+    
     let mut query = world.query_filtered::<(Entity, &Children), With<TestLevelComponent>>();
     let (level_entity, children) = match query.get_single(world) {
         Ok(v) => v,
         Err(_) => return,
     };
     
+    info!("After query");
+    
+    let mut builder = DynamicSceneBuilder::from_world(world);
     for child in children {
-            builder.extract_entity(*child);
+        // builder.extract_entity(*child);
+            info!("child: {:?}", child);
+            builder.extract_entity(level_entity);
     }
+    // builder.extract_entities(children.to_owned().into_iter());
         // world.entity_mut(level_entity).despawn_recursive();
 
     let scene = builder.build();

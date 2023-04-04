@@ -1,0 +1,15 @@
+(
+  entities: {
+    10: (
+      components: {
+        "bevy_hierarchy::components::children::Children": ([
+          (
+            generation: 0,
+            index: 11,
+          ),
+        ]),
+        "bevy_game_jam_3::game::level::level_manager::TestLevelComponent": (),
+      },
+    ),
+  },
+)
