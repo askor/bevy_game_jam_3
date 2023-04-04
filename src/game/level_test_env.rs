@@ -45,6 +45,7 @@ fn setup (
         Collider::ball(1.),
         Restitution::new(1.),
         RigidBody::Dynamic,
+        // GravityScale(0.0),
         GolfBall,
     ));
 

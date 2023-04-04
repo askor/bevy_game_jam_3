@@ -5,7 +5,7 @@ use crate::AppState;
 use super::gameplay_elements::Goal;
 
 #[derive(States, Default, Clone, Eq, PartialEq, Debug, Hash)]
-enum GameState {
+pub(crate) enum GameState {
     #[default]
     Standby,
     InProgress,
@@ -35,6 +35,7 @@ fn load_level() {
 fn level_complete(
     mut collisions: EventReader<CollisionEvent>,
     q_entity: Query<Entity, With<Goal>>,
+    mut state: ResMut<NextState<GameState>>,
 ) {
     for collision in collisions.iter() {
         
@@ -42,10 +43,11 @@ fn level_complete(
             CollisionEvent::Stopped(_, _, _) => return,
             CollisionEvent::Started(a, b, _) => {
                 if q_entity.get(*a).is_ok() {
-                    info!("Game over!")
+                    info!("Game over!");
                 }
                 if q_entity.get(*b).is_ok() {
-                    info!("Game over!")
+                    info!("Game over!");
+                    state.set(GameState::Complete);
                 }
             },
         }

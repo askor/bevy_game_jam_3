@@ -17,6 +17,7 @@ use bevy::app::App;
 #[cfg(debug_assertions)]
 use bevy::diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin};
 use bevy::prelude::*;
+use bevy_inspector_egui::quick::WorldInspectorPlugin;
 
 #[derive(States, Default, Clone, Eq, PartialEq, Debug, Hash)]
 enum AppState {
@@ -37,6 +38,8 @@ impl Plugin for AppPlugin {
             .add_plugin(PlayerPlugin)
             .add_plugin(EnvironmentPlugin)
             .add_plugin(GamePlugin)
+            
+            .add_plugin(WorldInspectorPlugin::new())
             ;
 
         // #[cfg(debug_assertions)]
