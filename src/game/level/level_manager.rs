@@ -1,7 +1,5 @@
 use std::{fs::File, io::Write};
-
 use bevy::{prelude::*, tasks::IoTaskPool};
-
 use crate::{game::{game_manager::GameState, gameplay_elements::{GolfBall, Goal, self}}, AppState};
 
 pub struct LevelManagerPlugin;
@@ -9,15 +7,17 @@ pub struct LevelManagerPlugin;
 impl Plugin for LevelManagerPlugin {
     fn build(&self, app: &mut App) {
         app
-            .register_type::<Level>()
-            .register_type::<bevy_rapier3d::dynamics::CoefficientCombineRule>()
+            .add_event::<SaveLevelEvent>()
+            .add_system(save_scene_system.run_if(on_event::<SaveLevelEvent>()))
             // .add_system(create_test_level.in_schedule(OnEnter(AppState::Playing)))
             .add_system(load_scene_system.in_schedule(OnEnter(GameState::InProgress)))
             .add_system(clean_up_level.in_schedule(OnExit(GameState::Complete)))
-            .add_system(save_scene_system.in_schedule(OnEnter(GameState::Complete)))
+            // .add_system(save_scene_system.in_schedule(OnEnter(GameState::Complete)))
             ;
     }
 }
+
+pub struct SaveLevelEvent;
 
 // Current level
 
@@ -37,10 +37,8 @@ pub struct Level;
 
 const NEW_SCENE_FILE_PATH: &str = "scenes/load_scene_example-new.scn.ron";
 
-// load next level
+// load level
 fn load_scene_system(mut commands: Commands, asset_server: Res<AssetServer>) {
-    // "Spawning" a scene bundle creates a new entity and spawns new instances
-    // of the given scene's entities as children of that entity.
     commands.spawn((
         Level,
         DynamicSceneBundle {
@@ -53,33 +51,34 @@ fn load_scene_system(mut commands: Commands, asset_server: Res<AssetServer>) {
 }
 
 fn save_scene_system(
+    // mut events: EventReader<SaveLevelEvent>,
     world: &mut World,
 ) {
     info!("Saving!");
-    
+
     let custom_type_registry = AppTypeRegistry::default();
 
     // let mut custom_registry = scene_world.resource_mut::<AppTypeRegistry>();
     custom_type_registry.write().register::<GolfBall>();
     custom_type_registry.write().register::<Goal>();
     custom_type_registry.write().register::<gameplay_elements::Box>();
-    
+
     custom_type_registry.write().register::<Transform>();
     custom_type_registry.write().register::<Vec3>();
     custom_type_registry.write().register::<Quat>();
-    
+
     let type_registry = world.resource::<AppTypeRegistry>().clone();
-    
+
     info!("After builder");
-    
+
     let mut query = world.query_filtered::<(Entity, &Children), With<Level>>();
     let (level_entity, children) = match query.get_single(world) {
         Ok(v) => v,
         Err(_) => return,
     };
-    
+
     info!("After query");
-    
+
     // let mut builder = DynamicSceneBuilder::from_world(world);
     let mut builder = DynamicSceneBuilder::from_world_with_type_registry(world, custom_type_registry.clone());
 

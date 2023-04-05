@@ -63,7 +63,7 @@ fn golfball_added(
             RigidBody::Dynamic,
             LockedAxes::all(),
             // GravityScale(0.0),
-            LaunchTimer(Timer::from_seconds(1.0, TimerMode::Repeating)),
+            // LaunchTimer(Timer::from_seconds(1.0, TimerMode::Repeating)),
             Name::new("Ball"),
         ));
     }

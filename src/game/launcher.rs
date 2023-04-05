@@ -1,13 +1,20 @@
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::{LockedAxes, ExternalImpulse, Velocity};
 
+use super::gameplay_elements::GolfBall;
+
 pub struct LauncherPlugin;
 
 impl Plugin for LauncherPlugin {
     fn build(&self, app: &mut App) {
-        app.add_system(launch_countdown);
+        app
+            .add_event::<LaunchEvent>()
+            .add_system(launch_ball.run_if(on_event::<LaunchEvent>()))
+            .add_system(launch_countdown);
     }
 }
+
+pub struct LaunchEvent;
 
 #[derive(Component)]
 pub(crate) struct Launcher;
@@ -31,5 +38,18 @@ fn launch_countdown(
             // commands.entity(entity).insert(LockedAxes::empty());
             commands.entity(entity).insert( Velocity{ linvel: Vec3::new(0., 0., -10.), angvel: Vec3::ZERO });
         }
+    }
+}
+
+fn launch_ball(
+    mut commands: Commands,
+    mut query: Query<Entity, With<GolfBall>>,
+    mut q_locked_axes: Query<&mut LockedAxes>,
+) {
+    for entity in &mut query {
+        info!("Launch!");
+        let mut axes = q_locked_axes.get_mut(entity).unwrap();
+        axes.toggle(LockedAxes::all());
+        commands.entity(entity).insert( Velocity{ linvel: Vec3::new(0., 0., -10.), angvel: Vec3::ZERO });
     }
 }

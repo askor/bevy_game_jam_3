@@ -1,11 +1,13 @@
 mod game_manager;
-mod level;
+pub(crate) mod level;
 mod gameplay_elements;
 mod level_test_env;
 mod launcher;
 
 use bevy::prelude::*;
 use self::{game_manager::GameManagerPlugin, level_test_env::LevelTestEnvironmentPlugin, level::LevelPlugin, launcher::LauncherPlugin, gameplay_elements::GameplayElementsPlugin};
+
+pub use launcher::LaunchEvent;
 
 pub struct GamePlugin;
 

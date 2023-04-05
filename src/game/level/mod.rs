@@ -1,4 +1,4 @@
-mod level_manager;
+pub(crate) mod level_manager;
 
 use bevy::prelude::*;
 
