@@ -5,19 +5,20 @@ mod menu;
 mod player;
 mod environment;
 mod game;
+mod tools;
 
-use crate::actions::ActionsPlugin;
-use crate::loading::LoadingPlugin;
-use crate::menu::MenuPlugin;
-use crate::player::PlayerPlugin;
-use crate::environment::EnvironmentPlugin;
-use crate::game::GamePlugin;
+use actions::ActionsPlugin;
+use loading::LoadingPlugin;
+use menu::MenuPlugin;
+use player::PlayerPlugin;
+use environment::EnvironmentPlugin;
+use game::GamePlugin;
+use tools::ToolsPlugin;
 
 use bevy::app::App;
 #[cfg(debug_assertions)]
 use bevy::diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin};
 use bevy::prelude::*;
-use bevy_inspector_egui::quick::WorldInspectorPlugin;
 
 #[derive(States, Default, Clone, Eq, PartialEq, Debug, Hash)]
 enum AppState {
@@ -39,7 +40,7 @@ impl Plugin for AppPlugin {
             .add_plugin(EnvironmentPlugin)
             .add_plugin(GamePlugin)
             
-            .add_plugin(WorldInspectorPlugin::new())
+            .add_plugin(ToolsPlugin)
             ;
 
         // #[cfg(debug_assertions)]

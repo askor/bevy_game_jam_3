@@ -8,7 +8,7 @@ pub struct GameplayElementsPlugin;
 impl Plugin for GameplayElementsPlugin {
     fn build(&self, app: &mut App) {
         app
-            .register_type::<Goal>()
+            .register_type::<Goal>() // TODO remove?
             .register_type::<GolfBall>()
             .register_type::<Box>()
             .add_system(golfball_added
@@ -51,7 +51,6 @@ fn golfball_added(
     mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
     if let Ok(entity) = query.get_single() {
-        info!("ADDDED GOLFBALL #################################################");
         commands.entity(entity).insert((
             PbrBundle {
                 mesh: meshes.add(Mesh::try_from(shape::Icosphere{radius: 1., subdivisions: 5 }).unwrap()),

@@ -1,8 +1,6 @@
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
-
 use crate::AppState;
-
 use super::{gameplay_elements::{Goal, GolfBall, Box}, launcher::LaunchTimer};
 use crate::game::level::Level;
 
@@ -76,6 +74,7 @@ fn setup (
         Restitution::new(1.0)
     )).id();
 
+    // Add as child of level to save
     commands.entity(level).add_child(ball);
     commands.entity(level).add_child(goal);
     commands.entity(level).add_child(ground);
