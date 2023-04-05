@@ -29,7 +29,7 @@ fn launch_countdown(
             axes.toggle(LockedAxes::all());
             commands.entity(entity).remove::<LaunchTimer>();
             // commands.entity(entity).insert(LockedAxes::empty());
-            commands.entity(entity).insert( Velocity{ linvel: Vec3::new(10., 0., 0.), angvel: Vec3::ZERO });
+            commands.entity(entity).insert( Velocity{ linvel: Vec3::new(0., 0., -10.), angvel: Vec3::ZERO });
         }
     }
 }

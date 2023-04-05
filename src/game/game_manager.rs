@@ -18,18 +18,19 @@ impl Plugin for GameManagerPlugin {
     fn build(&self, app: &mut App) {
         app
             .add_state::<GameState>()
-            .add_system(load_level.in_schedule(OnEnter(GameState::InProgress)))
+            .add_system(start_game.in_schedule(OnEnter(AppState::Playing)))
             .add_system(level_complete
-                // .in_set(OnUpdate(GameState::InProgress))
+                .in_set(OnUpdate(GameState::InProgress))
                 .in_set(OnUpdate(AppState::Playing))
             )
             ;
     }
 }
 
-fn load_level() {
-    // TODO
-    info!("TODO: Implement level loading");
+fn start_game(
+    mut state: ResMut<NextState<GameState>>,
+) {
+    state.set(GameState::InProgress);
 }
 
 fn level_complete(

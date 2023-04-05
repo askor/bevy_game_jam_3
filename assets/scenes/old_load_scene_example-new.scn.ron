@@ -1,0 +1,250 @@
+(
+  entities: {
+    7: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: 0.0,
+            y: -1.7016637,
+            z: -38.648464,
+          ),
+          rotation: (0.6454867, 0.0, 0.0, 0.76377153),
+          scale: (
+            x: 1.0,
+            y: 1.0,
+            z: 1.0,
+          ),
+        ),
+        "bevy_transform::components::global_transform::GlobalTransform": ((
+          matrix3: (
+            x_axis: (
+              x: 1.0,
+              y: 0.0,
+              z: 0.0,
+            ),
+            y_axis: (
+              x: 0.0,
+              y: 0.1666938,
+              z: 0.98600876,
+            ),
+            z_axis: (
+              x: 0.0,
+              y: -0.98600876,
+              z: 0.1666938,
+            ),
+          ),
+          translation: (
+            x: 0.0,
+            y: -1.7016637,
+            z: -38.648464,
+          ),
+        )),
+        "bevy_hierarchy::components::parent::Parent": ((
+          generation: 1,
+          index: 5,
+        )),
+        "bevy_render::view::visibility::Visibility": Inherited,
+        "bevy_render::view::visibility::ComputedVisibility": (
+          flags: (
+            bits: 3,
+          ),
+        ),
+        "bevy_asset::handle::Handle<bevy_render::mesh::mesh::Mesh>": (
+          id: Id("8ecbac0f-f545-4473-ad43-e1f4243af51e", 14396647789103900401),
+        ),
+        "bevy_core::name::Name": (
+          hash: 4320975615042156439,
+          name: "Ball",
+        ),
+        "bevy_render::primitives::Aabb": (
+          center: (
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+          ),
+          half_extents: (
+            x: 0.99448955,
+            y: 1.0,
+            z: 0.99999994,
+          ),
+        ),
+        "bevy_rapier3d::geometry::collider::Restitution": (
+          coefficient: 1.0,
+          combine_rule: Average,
+        ),
+        "bevy_rapier3d::dynamics::rigid_body::RigidBody": Dynamic,
+        "bevy_rapier3d::dynamics::rigid_body::Velocity": (
+          linvel: (
+            x: 0.0,
+            y: 15.207001,
+            z: -6.9736223,
+          ),
+          angvel: (
+            x: -7.2236037,
+            y: 0.0,
+            z: 0.0,
+          ),
+        ),
+        "bevy_rapier3d::dynamics::rigid_body::LockedAxes": (
+          bits: 0,
+        ),
+        "bevy_asset::handle::Handle<bevy_pbr::pbr_material::StandardMaterial>": (
+          id: Id("7494888b-c082-457b-aacf-517228cc0c22", 16924107985613148444),
+        ),
+      },
+    ),
+    8: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: 0.0,
+            y: -4.0,
+            z: 0.0,
+          ),
+          rotation: (0.0, 0.0, 0.0, 1.0),
+          scale: (
+            x: 1.0,
+            y: 1.0,
+            z: 1.0,
+          ),
+        ),
+        "bevy_transform::components::global_transform::GlobalTransform": ((
+          matrix3: (
+            x_axis: (
+              x: 1.0,
+              y: 0.0,
+              z: 0.0,
+            ),
+            y_axis: (
+              x: 0.0,
+              y: 1.0,
+              z: 0.0,
+            ),
+            z_axis: (
+              x: 0.0,
+              y: 0.0,
+              z: 1.0,
+            ),
+          ),
+          translation: (
+            x: 0.0,
+            y: -4.0,
+            z: 0.0,
+          ),
+        )),
+        "bevy_hierarchy::components::parent::Parent": ((
+          generation: 1,
+          index: 5,
+        )),
+        "bevy_render::view::visibility::Visibility": Inherited,
+        "bevy_render::view::visibility::ComputedVisibility": (
+          flags: (
+            bits: 3,
+          ),
+        ),
+        "bevy_asset::handle::Handle<bevy_render::mesh::mesh::Mesh>": (
+          id: Id("8ecbac0f-f545-4473-ad43-e1f4243af51e", 821995180810689611),
+        ),
+        "bevy_render::primitives::Aabb": (
+          center: (
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+          ),
+          half_extents: (
+            x: 50.0,
+            y: 0.5,
+            z: 50.0,
+          ),
+        ),
+        "bevy_rapier3d::geometry::collider::Restitution": (
+          coefficient: 1.0,
+          combine_rule: Average,
+        ),
+        "bevy_rapier3d::dynamics::rigid_body::RigidBody": Fixed,
+        "bevy_asset::handle::Handle<bevy_pbr::pbr_material::StandardMaterial>": (
+          id: Id("7494888b-c082-457b-aacf-517228cc0c22", 16539851125322769036),
+        ),
+      },
+    ),
+    9: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: 0.0,
+            y: 0.0,
+            z: -40.0,
+          ),
+          rotation: (0.0, 0.0, 0.0, 1.0),
+          scale: (
+            x: 1.0,
+            y: 1.0,
+            z: 1.0,
+          ),
+        ),
+        "bevy_transform::components::global_transform::GlobalTransform": ((
+          matrix3: (
+            x_axis: (
+              x: 1.0,
+              y: 0.0,
+              z: 0.0,
+            ),
+            y_axis: (
+              x: 0.0,
+              y: 1.0,
+              z: 0.0,
+            ),
+            z_axis: (
+              x: 0.0,
+              y: 0.0,
+              z: 1.0,
+            ),
+          ),
+          translation: (
+            x: 0.0,
+            y: 0.0,
+            z: -40.0,
+          ),
+        )),
+        "bevy_hierarchy::components::parent::Parent": ((
+          generation: 1,
+          index: 5,
+        )),
+        "bevy_render::view::visibility::Visibility": Inherited,
+        "bevy_render::view::visibility::ComputedVisibility": (
+          flags: (
+            bits: 3,
+          ),
+        ),
+        "bevy_asset::handle::Handle<bevy_render::mesh::mesh::Mesh>": (
+          id: Id("8ecbac0f-f545-4473-ad43-e1f4243af51e", 7088429320579828326),
+        ),
+        "bevy_core::name::Name": (
+          hash: 8262876739613653031,
+          name: "Goal",
+        ),
+        "bevy_render::primitives::Aabb": (
+          center: (
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+          ),
+          half_extents: (
+            x: 1.0,
+            y: 1.0,
+            z: 1.0,
+          ),
+        ),
+        "bevy_rapier3d::geometry::collider::Restitution": (
+          coefficient: 1.0,
+          combine_rule: Average,
+        ),
+        "bevy_rapier3d::geometry::collider::Sensor": (),
+        "bevy_rapier3d::dynamics::rigid_body::RigidBody": Fixed,
+        "bevy_asset::handle::Handle<bevy_pbr::pbr_material::StandardMaterial>": (
+          id: Id("7494888b-c082-457b-aacf-517228cc0c22", 15334400214740512380),
+        ),
+      },
+    ),
+  },
+)
