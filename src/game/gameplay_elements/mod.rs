@@ -1,10 +1,11 @@
-mod launcher;
+pub mod launcher;
 
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 use crate::AppState;
 use super::game_manager::GameState;
 
+use self::launcher::Launcher;
 pub use self::launcher::{LauncherPlugin, LaunchEvent};
 
 pub struct GameplayElementsPlugin;
@@ -12,7 +13,8 @@ pub struct GameplayElementsPlugin;
 impl Plugin for GameplayElementsPlugin {
     fn build(&self, app: &mut App) {
         app
-            .add_plugin(LauncherPlugin)            .register_type::<Goal>() // TODO remove?
+            .add_plugin(LauncherPlugin)
+            .register_type::<Goal>() // TODO remove?
             .register_type::<GolfBall>()
             .register_type::<Box>()
             .add_system(golfball_added
@@ -54,7 +56,7 @@ fn golfball_added(
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
-    if let Ok((entity, transform)) = query.get_single() {
+    for (entity, transform) in query.iter() {
         commands.entity(entity).insert((
             meshes.add(Mesh::try_from(shape::Icosphere{radius: 1., subdivisions: 5 }).unwrap()),
             materials.add(Color::rgb(0.8, 0.7, 0.6).into()),

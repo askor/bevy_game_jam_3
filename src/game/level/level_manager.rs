@@ -1,6 +1,6 @@
 use std::{fs::File, io::Write};
 use bevy::{prelude::*, tasks::IoTaskPool, math::{Affine3A, Mat3A, Vec3A}};
-use crate::{game::{game_manager::GameState, gameplay_elements::{GolfBall, Goal, self}}, AppState};
+use crate::{game::{game_manager::GameState, gameplay_elements::{GolfBall, Goal, self, launcher::Launcher}}, AppState};
 
 pub struct LevelManagerPlugin;
 
@@ -60,6 +60,7 @@ fn save_scene_system(
 
     // let mut custom_registry = scene_world.resource_mut::<AppTypeRegistry>();
     custom_type_registry.write().register::<GolfBall>();
+    custom_type_registry.write().register::<Launcher>();
     custom_type_registry.write().register::<Goal>();
     custom_type_registry.write().register::<gameplay_elements::Box>();
     
