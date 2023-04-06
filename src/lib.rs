@@ -8,6 +8,7 @@ mod game;
 mod tools;
 
 use actions::ActionsPlugin;
+use audio::InternalAudioPlugin;
 use loading::LoadingPlugin;
 use menu::MenuPlugin;
 use player::PlayerPlugin;
@@ -35,6 +36,7 @@ impl Plugin for AppPlugin {
         app.add_state::<AppState>()
             .add_plugin(LoadingPlugin)
             .add_plugin(MenuPlugin)
+            .add_plugin(InternalAudioPlugin)
             .add_plugin(ActionsPlugin)
             .add_plugin(PlayerPlugin)
             .add_plugin(EnvironmentPlugin)
