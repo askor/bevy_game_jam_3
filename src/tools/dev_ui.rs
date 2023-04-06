@@ -1,7 +1,7 @@
 use bevy::{prelude::*, window::PrimaryWindow};
 use bevy_inspector_egui::{egui::{self, Visuals}, bevy_egui::EguiContext};
 
-use crate::game::{level::level_manager::SaveLevelEvent, gameplay_elements::LaunchEvent};
+use crate::game::{level::level_manager::SaveLevelEvent, gameplay_elements::{LaunchEvent, launcher::LaunchVelocity}};
 
 pub struct DevUiPlugin;
 
@@ -37,7 +37,7 @@ fn setup_ui(
         }
 
         let mut float = 1.0;
-        ui.add(egui::Slider::new(&mut float, 1.0..=100.0));
+        ui.add(egui::Slider::new(&mut world.resource_mut::<LaunchVelocity>().0, 10.0..=100.0));
         
         let mut value = true;
         ui.horizontal(|ui| {

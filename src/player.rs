@@ -28,7 +28,7 @@ fn setup(
             ..default()
         },
         Name::new("Camera"),
-        FlyCam,
+        // FlyCam,
         Player,
     ));
 }
