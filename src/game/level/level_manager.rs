@@ -9,10 +9,8 @@ impl Plugin for LevelManagerPlugin {
         app
             .add_event::<SaveLevelEvent>()
             .add_system(save_scene_system.run_if(on_event::<SaveLevelEvent>()))
-            // .add_system(create_test_level.in_schedule(OnEnter(AppState::Playing)))
             .add_system(load_scene_system.in_schedule(OnEnter(GameState::InProgress)))
             .add_system(clean_up_level.in_schedule(OnExit(GameState::Complete)))
-            // .add_system(save_scene_system.in_schedule(OnEnter(GameState::Complete)))
             ;
     }
 }

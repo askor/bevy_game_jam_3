@@ -13,7 +13,7 @@ impl Plugin for LauncherPlugin {
         app
             .add_event::<LaunchEvent>()
             .register_type::<Launcher>()
-            .insert_resource(LaunchVelocity(10.0))
+            .insert_resource(LaunchVelocity(30.0))
             .add_system(launcher_added
                 .in_set(OnUpdate(GameState::InProgress))
                 .in_set(OnUpdate(AppState::Playing))
