@@ -1,5 +1,5 @@
 use std::{fs::File, io::Write};
-use bevy::{prelude::*, tasks::IoTaskPool};
+use bevy::{prelude::*, tasks::IoTaskPool, math::{Affine3A, Mat3A, Vec3A}};
 use crate::{game::{game_manager::GameState, gameplay_elements::{GolfBall, Goal, self}}, AppState};
 
 pub struct LevelManagerPlugin;
@@ -62,6 +62,11 @@ fn save_scene_system(
     custom_type_registry.write().register::<GolfBall>();
     custom_type_registry.write().register::<Goal>();
     custom_type_registry.write().register::<gameplay_elements::Box>();
+    
+    // custom_type_registry.write().register::<GlobalTransform>();
+    // custom_type_registry.write().register::<Affine3A>();
+    // custom_type_registry.write().register::<Mat3A>();
+    // custom_type_registry.write().register::<Vec3A>();
 
     custom_type_registry.write().register::<Transform>();
     custom_type_registry.write().register::<Vec3>();

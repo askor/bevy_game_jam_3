@@ -1,4 +1,4 @@
-use bevy::prelude::*;
+use bevy::{prelude::*, math::Affine3A};
 use bevy_rapier3d::prelude::*;
 use crate::AppState;
 use super::{launcher::LaunchTimer, game_manager::GameState};
@@ -45,17 +45,17 @@ pub(crate) struct Box {
 
 // On golfball added
 fn golfball_added(
-    query: Query<Entity, Added<GolfBall>>,
+    query: Query<(Entity, &Transform), Added<GolfBall>>,
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
-    if let Ok(entity) = query.get_single() {
+    if let Ok((entity, transform)) = query.get_single() {
         commands.entity(entity).insert((
-            PbrBundle {
-                mesh: meshes.add(Mesh::try_from(shape::Icosphere{radius: 1., subdivisions: 5 }).unwrap()),
-                material: materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
-                transform: Transform::from_xyz(0.0, 10., 0.0),
+            meshes.add(Mesh::try_from(shape::Icosphere{radius: 1., subdivisions: 5 }).unwrap()),
+            materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
+            SpatialBundle {
+                transform: *transform,
                 ..default()
             },
             Collider::ball(1.),
@@ -71,20 +71,20 @@ fn golfball_added(
 
 // On Goal added
 fn goal_added(
-    query: Query<Entity, Added<Goal>>,
+    query: Query<(Entity, &Transform), Added<Goal>>,
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
-    if let Ok(entity) = query.get_single() {
+    if let Ok((entity, transform)) = query.get_single() {
         let goals_dims = create_physical_box(2., 2., 2.);
         commands.entity(entity).insert((
-            PbrBundle {
-                mesh: meshes.add(goals_dims.1),
-                material: materials.add(Color::rgb(0.9, 0.1, 0.1).into()),
-                transform: Transform::from_xyz(0.0, 0.0, -40.0),
+            meshes.add(goals_dims.1),
+            materials.add(Color::rgb(0.9, 0.1, 0.1).into()),
+            SpatialBundle {
+                transform: *transform,
                 ..default()
-                },
+            },
             goals_dims.0,
             RigidBody::Fixed,
             Restitution::new(1.0),
@@ -97,18 +97,18 @@ fn goal_added(
 
 // On Box added
 fn box_added(
-    query: Query<(Entity, &Box), Added<Box>>,
+    query: Query<(Entity, &Box, &Transform), Added<Box>>,
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
-    if let Ok((entity, box_dims)) = query.get_single() {
+    if let Ok((entity, box_dims, transform)) = query.get_single() {
         let ground_dims = create_physical_box(box_dims.x, box_dims.y, box_dims.z);
         commands.entity(entity).insert((
-            PbrBundle {
-                mesh: meshes.add(ground_dims.1),
-                material: materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
-                transform: Transform::from_xyz(0.0, -4., 0.0),
+            meshes.add(ground_dims.1),
+            materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
+            SpatialBundle {
+                transform: *transform,
                 ..default()
             },
             ground_dims.0, // Collider
