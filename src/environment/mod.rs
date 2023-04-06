@@ -1,11 +1,12 @@
 mod test_env;
 mod physics;
 mod physics_test_env;
+mod lighting;
 
 use bevy::prelude::*;
 use test_env::TestEnvironmentPlugin;
 
-use self::{physics::PhysicsPlugin, physics_test_env::PhysicsTestEnvironmentPlugin};
+use self::{physics::PhysicsPlugin, physics_test_env::PhysicsTestEnvironmentPlugin, lighting::LightingPlugin};
 
 pub struct EnvironmentPlugin;
 
@@ -14,6 +15,7 @@ impl Plugin for EnvironmentPlugin {
         app
             // .add_plugin(TestEnvironmentPlugin)
             // .add_plugin(PhysicsTestEnvironmentPlugin)
+            .add_plugin(LightingPlugin)
             .add_plugin(PhysicsPlugin);
     }
 }
