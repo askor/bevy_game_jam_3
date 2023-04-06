@@ -1,7 +1,7 @@
 use bevy::{prelude::*, window::PrimaryWindow};
 use bevy_inspector_egui::{egui::{self, Visuals}, bevy_egui::EguiContext};
 
-use crate::game::{level::level_manager::SaveLevelEvent, LaunchEvent};
+use crate::game::{level::level_manager::SaveLevelEvent, gameplay_elements::LaunchEvent};
 
 pub struct DevUiPlugin;
 
@@ -25,7 +25,6 @@ fn setup_ui(
         ui.label("Level");
         ui.horizontal(|ui| {
             if ui.button("Save").clicked() {
-                info!("Button 1 clicked!");
                 world.send_event::<SaveLevelEvent>(SaveLevelEvent);
             }
             if ui.button("Load").clicked() {

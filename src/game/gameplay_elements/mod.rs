@@ -1,14 +1,18 @@
-use bevy::{prelude::*, math::Affine3A};
+mod launcher;
+
+use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 use crate::AppState;
-use super::{launcher::LaunchTimer, game_manager::GameState};
+use super::game_manager::GameState;
+
+pub use self::launcher::{LauncherPlugin, LaunchEvent};
 
 pub struct GameplayElementsPlugin;
 
 impl Plugin for GameplayElementsPlugin {
     fn build(&self, app: &mut App) {
         app
-            .register_type::<Goal>() // TODO remove?
+            .add_plugin(LauncherPlugin)            .register_type::<Goal>() // TODO remove?
             .register_type::<GolfBall>()
             .register_type::<Box>()
             .add_system(golfball_added

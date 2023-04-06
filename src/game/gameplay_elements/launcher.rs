@@ -1,7 +1,7 @@
 use bevy::prelude::*;
-use bevy_rapier3d::prelude::{LockedAxes, ExternalImpulse, Velocity};
+use bevy_rapier3d::prelude::{LockedAxes, Velocity};
 
-use super::gameplay_elements::GolfBall;
+use super::GolfBall;
 
 pub struct LauncherPlugin;
 
