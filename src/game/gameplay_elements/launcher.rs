@@ -147,7 +147,6 @@ fn play_launch_sound(
     }
     else if *sound_index == 3 {
         sound = assets.launch4.clone();
-    } else {
     }
 
     audio.play(sound);

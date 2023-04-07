@@ -33,8 +33,8 @@ pub struct AudioAssets {
     pub launch4: Handle<AudioSource>,
     
     // Music
-    #[asset(path = "audio/music/flog2.mp3")]
-    pub flog2: Handle<AudioSource>,
+    #[asset(path = "audio/music/MainThemeLoop.ogg")]
+    pub main_theme: Handle<AudioSource>,
 }
 
 #[derive(AssetCollection, Resource)]
