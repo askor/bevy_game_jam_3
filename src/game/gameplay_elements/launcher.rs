@@ -133,20 +133,20 @@ fn play_launch_sound(
     audio: Res<Audio>,
     mut sound_index: Local<u8>,
 ) {
-    let mut sound = assets.launch1.clone_weak();
+    let mut sound = assets.launch1.clone();
     let sound_count = 4;
 
     if *sound_index == 0 {
-        sound = assets.launch1.clone_weak();
+        sound = assets.launch1.clone();
     }
     else if *sound_index == 1 {
-        sound = assets.launch2.clone_weak();
+        sound = assets.launch2.clone();
     }
     else if *sound_index == 2 {
-        sound = assets.launch3.clone_weak();
+        sound = assets.launch3.clone();
     }
     else if *sound_index == 3 {
-        sound = assets.launch4.clone_weak();
+        sound = assets.launch4.clone();
     } else {
     }
 
