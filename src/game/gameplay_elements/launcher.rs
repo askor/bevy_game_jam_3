@@ -2,7 +2,7 @@ use bevy::prelude::*;
 use bevy_rapier3d::prelude::{LockedAxes, Velocity};
 use leafwing_input_manager::prelude::*;
 
-use crate::{actions::Action, game::game_manager::GameState, AppState};
+use crate::{actions::Action, game::game_manager::GameState, AppState, loading::AudioAssets};
 
 use super::{GolfBall, create_physical_box};
 
@@ -19,6 +19,7 @@ impl Plugin for LauncherPlugin {
                 .in_set(OnUpdate(AppState::Playing))
             )
             .add_system(launch_ball)
+            .add_system(play_launch_sound.run_if(on_event::<LaunchEvent>()))
             .add_system(aim_launcher)
             .add_system(launch_countdown);
     }
@@ -94,6 +95,7 @@ fn launch_ball(
     mut ball_q: Query<(Entity, &mut Transform), (With<GolfBall>, Without<Launcher>)>,
     mut q_locked_axes: Query<&mut LockedAxes>,
     launc_vel: Res<LaunchVelocity>,
+    mut launch_event: EventWriter<LaunchEvent>,
 ) {
     if let Ok((launcher_trans, action_state)) = launcher_q.get_single() { 
         if let Ok((entity, mut ball_trans)) = ball_q.get_single_mut() {
@@ -107,12 +109,27 @@ fn launch_ball(
             // Add velocity
             let velocity = launcher_trans.forward() * launc_vel.0;
             commands.entity(entity).insert( Velocity{ linvel: velocity, angvel: Vec3::ZERO });
+            // Create event
+            launch_event.send(LaunchEvent);
         }
     }
 }
 
 
 /////////////////////////////////////////////////////////
+
+fn play_launch_sound(
+    asset_server: Res<AssetServer>,
+    assets: Res<AudioAssets>,
+    audio: Res<Audio>,
+) {
+    let sound = assets.launch.clone_weak();
+    audio.play(sound);
+}
+
+
+
+
 
 #[derive(Component, Deref, DerefMut)]
 pub(crate) struct LaunchTimer(pub Timer);

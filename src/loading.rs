@@ -1,5 +1,5 @@
 use crate::AppState;
-use bevy::prelude::*;
+use bevy::{prelude::*, audio::Source};
 use bevy_asset_loader::prelude::*;
 
 pub struct LoadingPlugin;
@@ -23,8 +23,14 @@ pub struct FontAssets {
 
 #[derive(AssetCollection, Resource)]
 pub struct AudioAssets {
-    #[asset(path = "audio/flying.ogg")]
-    pub flying: Handle<AudioSource>,
+    #[asset(path = "audio/mixkit-war-field-explosion-1702.wav")]
+    pub launch: Handle<AudioSource>,
+    #[asset(path = "audio/mixkit-gun-explosion-with-long-echo-1700.wav")]
+    pub launch2: Handle<AudioSource>,
+    
+    // Music
+    #[asset(path = "audio/music/flog2.mp3")]
+    pub flog2: Handle<AudioSource>,
 }
 
 #[derive(AssetCollection, Resource)]
