@@ -20,7 +20,7 @@ impl Plugin for GameManagerPlugin {
         app
             .add_state::<GameState>()
             .add_event::<LevelCompletEvent>()
-            .add_system(start_game.in_schedule(OnEnter(AppState::Playing)))
+            .add_system(auto_start_game.in_schedule(OnEnter(AppState::Playing)))
             .add_system(level_complete
                 .in_set(OnUpdate(GameState::InProgress))
                 .in_set(OnUpdate(AppState::Playing))
@@ -34,7 +34,7 @@ impl Plugin for GameManagerPlugin {
     }
 }
 
-fn start_game(
+fn auto_start_game(
     mut state: ResMut<NextState<GameState>>,
 ) {
     state.set(GameState::InProgress);
@@ -51,10 +51,7 @@ fn level_complete(
         match collision {
             CollisionEvent::Stopped(_, _, _) => return,
             CollisionEvent::Started(a, b, _) => {
-                if q_entity.get(*a).is_ok() {
-                    info!("Game over!");
-                }
-                if q_entity.get(*b).is_ok() {
+                if q_entity.get(*a).is_ok() || q_entity.get(*b).is_ok() {
                     info!("Game over!");
                     events.send(LevelCompletEvent);
                     state.set(GameState::Complete);
