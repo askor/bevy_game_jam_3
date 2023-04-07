@@ -4,7 +4,7 @@ use leafwing_input_manager::prelude::*;
 
 use crate::{actions::Action, game::game_manager::GameState, AppState, loading::AudioAssets};
 
-use super::{GolfBall, create_physical_box};
+use super::{GolfBall, create_physical_box, GolfBallBundle};
 
 pub struct LauncherPlugin;
 
@@ -92,26 +92,36 @@ fn aim_launcher(
 fn launch_ball(
     mut commands: Commands,
     launcher_q: Query<(&Transform, &ActionState<Action>), With<Launcher>>,
-    mut ball_q: Query<(Entity, &mut Transform), (With<GolfBall>, Without<Launcher>)>,
+    // mut ball_q: Query<(Entity, &mut Transform), (With<GolfBall>, Without<Launcher>)>,
     mut q_locked_axes: Query<&mut LockedAxes>,
     launc_vel: Res<LaunchVelocity>,
     mut launch_event: EventWriter<LaunchEvent>,
+    mut meshes: ResMut<Assets<Mesh>>,
+    mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
-    if let Ok((launcher_trans, action_state)) = launcher_q.get_single() { 
-        if let Ok((entity, mut ball_trans)) = ball_q.get_single_mut() {
-            if !action_state.just_pressed(Action::Shoot) { return; }
-            info!("Launch!");
-            // Free ball axes
-            // let mut axes = q_locked_axes.get_mut(entity).unwrap();
-            // axes.toggle(LockedAxes::all());
-            // Move to launcher
-            ball_trans.translation = launcher_trans.translation;
-            // Add velocity
-            let velocity = launcher_trans.forward() * launc_vel.0;
-            commands.entity(entity).insert( Velocity{ linvel: velocity, angvel: Vec3::ZERO });
-            // Create event
-            launch_event.send(LaunchEvent);
-        }
+    if let Ok((launcher_trans, action_state)) = launcher_q.get_single() {
+        if !action_state.just_pressed(Action::Shoot) { return; }
+
+        // Spawn ball with physics
+        let ball = commands.spawn(GolfBallBundle {
+            pbr: PbrBundle {
+                mesh: meshes.add(Mesh::try_from(shape::Icosphere{radius: 1., subdivisions: 5 }).unwrap()),
+                material: materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
+                transform: launcher_trans.clone(),
+                ..default()
+            },
+            ..default()
+        }).id();
+
+        let velocity = launcher_trans.forward() * launc_vel.0;
+        
+        commands.entity(ball).insert( Velocity{ linvel: velocity, angvel: Vec3::ZERO });
+        launch_event.send(LaunchEvent);
+
+        info!("Launch!");
+        // Free ball axes
+        // let mut axes = q_locked_axes.get_mut(entity).unwrap();
+        // axes.toggle(LockedAxes::all());
     }
 }
 
@@ -119,12 +129,34 @@ fn launch_ball(
 /////////////////////////////////////////////////////////
 
 fn play_launch_sound(
-    asset_server: Res<AssetServer>,
     assets: Res<AudioAssets>,
     audio: Res<Audio>,
+    mut sound_index: Local<u8>,
 ) {
-    let sound = assets.launch.clone_weak();
+    let mut sound = assets.launch1.clone_weak();
+    let sound_count = 4;
+
+    if *sound_index == 0 {
+        sound = assets.launch1.clone_weak();
+    }
+    else if *sound_index == 1 {
+        sound = assets.launch2.clone_weak();
+    }
+    else if *sound_index == 2 {
+        sound = assets.launch3.clone_weak();
+    }
+    else if *sound_index == 3 {
+        sound = assets.launch4.clone_weak();
+    } else {
+    }
+
     audio.play(sound);
+
+    // Update index for new sound
+    *sound_index += 1;
+    if *sound_index > (sound_count -1) {
+        *sound_index = 1u8;
+    }
 }
 
 

@@ -1,5 +1,7 @@
 pub mod launcher;
 
+use std::default;
+
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 use crate::AppState;
@@ -40,6 +42,30 @@ pub(crate) struct Goal;
 #[derive(Component, Reflect, Default)]
 #[reflect(Component)]
 pub(crate) struct GolfBall;
+
+#[derive(Bundle)]
+struct GolfBallBundle {
+    #[bundle]
+    pbr: PbrBundle,
+    name: Name,
+    collider: Collider,
+    restitution: Restitution,
+    rigidbody: RigidBody,
+    golf_ball: GolfBall,
+}
+
+impl Default for GolfBallBundle {
+    fn default() -> Self {
+        Self {
+            pbr: PbrBundle::default(),
+            name: Name::new("Golf ball"),
+            collider: Collider::ball(1.),
+            restitution: Restitution::new(1.),
+            rigidbody: RigidBody::Dynamic,
+            golf_ball: GolfBall, 
+        }
+    }
+}
 
 #[derive(Component, Reflect, Default)]
 #[reflect(Component)]

@@ -49,7 +49,6 @@ fn level_complete(
     for collision in collisions.iter() {
         
         match collision {
-            CollisionEvent::Stopped(_, _, _) => return,
             CollisionEvent::Started(a, b, _) => {
                 if q_entity.get(*a).is_ok() || q_entity.get(*b).is_ok() {
                     info!("Game over!");
@@ -57,6 +56,7 @@ fn level_complete(
                     state.set(GameState::Complete);
                 }
             },
+            CollisionEvent::Stopped(_, _, _) => (),
         }
     }
 }

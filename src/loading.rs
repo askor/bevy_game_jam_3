@@ -23,10 +23,14 @@ pub struct FontAssets {
 
 #[derive(AssetCollection, Resource)]
 pub struct AudioAssets {
-    #[asset(path = "audio/mixkit-war-field-explosion-1702.wav")]
-    pub launch: Handle<AudioSource>,
-    #[asset(path = "audio/mixkit-gun-explosion-with-long-echo-1700.wav")]
+    #[asset(path = "audio/shots/Shot1.ogg")]
+    pub launch1: Handle<AudioSource>,
+    #[asset(path = "audio/shots/Shot2.ogg")]
     pub launch2: Handle<AudioSource>,
+    #[asset(path = "audio/shots/Shot3.ogg")]
+    pub launch3: Handle<AudioSource>,
+    #[asset(path = "audio/shots/Shot4.ogg")]
+    pub launch4: Handle<AudioSource>,
     
     // Music
     #[asset(path = "audio/music/flog2.mp3")]
