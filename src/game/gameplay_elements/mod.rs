@@ -1,5 +1,6 @@
 pub mod launcher;
 pub mod ball;
+pub mod wall;
 
 use std::default;
 
@@ -19,12 +20,12 @@ impl Plugin for GameplayElementsPlugin {
             .add_plugin(LauncherPlugin)
             .add_plugin(GolfBallPlugin)
             .register_type::<Goal>() // TODO remove?
-            .register_type::<Box>()
+            .register_type::<wall::Box>()
             .add_system(goal_added
                 .in_set(OnUpdate(GameState::InProgress))
                 .in_set(OnUpdate(AppState::Playing))
             )
-            .add_system(box_added
+            .add_system(wall::box_added
                 .in_set(OnUpdate(GameState::InProgress))
                 .in_set(OnUpdate(AppState::Playing))
             )
@@ -32,50 +33,10 @@ impl Plugin for GameplayElementsPlugin {
     }
 }
 
-
-// mod ball {
-//     use crate::AppState::crate;
-
-//     #[derive(Component, Reflect, Default)]
-//     #[reflect(Component)]
-//     pub(crate) struct GolfBall;
-
-//     #[derive(Bundle)]
-//     pub(crate) struct GolfBallBundle {
-//         #[bundle]
-//         pub(crate) pbr: PbrBundle,
-//         pub(crate) name: Name,
-//         pub(crate) collider: Collider,
-//         pub(crate) restitution: Restitution,
-//         pub(crate) rigidbody: RigidBody,
-//         pub(crate) golf_ball: GolfBall,
-//     }
-
-//     impl Default for GolfBallBundle {
-//         fn default() -> Self {
-//             Self {
-//                 pbr: PbrBundle::default(),
-//                 name: Name::new("Golf ball"),
-//                 collider: Collider::ball(1.),
-//                 restitution: Restitution::new(1.),
-//                 rigidbody: RigidBody::Dynamic,
-//                 golf_ball: GolfBall, 
-//             }
-//         }
-//     }
-// }
-
 #[derive(Component, Reflect, Default)]
 #[reflect(Component)]
 pub(crate) struct Goal;
 
-#[derive(Component, Reflect, Default)]
-#[reflect(Component)]
-pub(crate) struct Box {
-    pub(crate) x: f32,
-    pub(crate) y: f32,
-    pub(crate) z: f32,
-}
 
 // On Goal added
 fn goal_added(
@@ -103,37 +64,13 @@ fn goal_added(
     }
 }
 
-// On Box added
-fn box_added(
-    query: Query<(Entity, &Box, &Transform), Added<Box>>,
-    mut commands: Commands,
-    mut meshes: ResMut<Assets<Mesh>>,
-    mut materials: ResMut<Assets<StandardMaterial>>,
-) {
-    if let Ok((entity, box_dims, transform)) = query.get_single() {
-        let ground_dims = create_physical_box(box_dims.x, box_dims.y, box_dims.z);
-        commands.entity(entity).insert((
-            meshes.add(ground_dims.1),
-            materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
-            SpatialBundle {
-                transform: *transform,
-                ..default()
-            },
-            ground_dims.0, // Collider
-            ground_dims.2, // Box
-            RigidBody::Fixed,
-            Restitution::new(1.0)
-        ));
-    }
-}
-
 
 /////////////////////////////////////////////////////////////////
 
-fn create_physical_box(x: f32, y: f32, z: f32) -> (Collider, Mesh, Box) {
+fn create_physical_box(x: f32, y: f32, z: f32) -> (Collider, Mesh, wall::Box) {
     let collider = Collider::cuboid(x/2., y/2., z/2.);
     let mesh = Mesh::from(shape::Box::new(x, y, z));
-    let box_dims = Box {x, y, z};
+    let box_dims = wall::Box {x, y, z};
 
     return (collider, mesh, box_dims);
 }

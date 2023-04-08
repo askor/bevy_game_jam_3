@@ -1,7 +1,8 @@
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 use crate::AppState;
-use super::gameplay_elements::{Goal, Box};
+use super::gameplay_elements::wall;
+use super::gameplay_elements::{Goal, wall::Box};
 use super::gameplay_elements::ball::GolfBall;
 use crate::game::level::Level;
 
@@ -92,10 +93,10 @@ fn setup (
     });
 }
 
-fn create_physical_box(x: f32, y: f32, z: f32) -> (Collider, Mesh, Box) {
+fn create_physical_box(x: f32, y: f32, z: f32) -> (Collider, Mesh, wall::Box) {
     let collider = Collider::cuboid(x/2., y/2., z/2.);
     let mesh = Mesh::from(shape::Box::new(x, y, z));
-    let box_dims = Box {x, y, z};
+    let box_dims = wall::Box {x, y, z};
 
     return (collider, mesh, box_dims);
 }

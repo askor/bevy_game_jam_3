@@ -62,7 +62,7 @@ fn save_scene_system(
     custom_type_registry.write().register::<GolfBall>();
     custom_type_registry.write().register::<Launcher>();
     custom_type_registry.write().register::<Goal>();
-    custom_type_registry.write().register::<gameplay_elements::Box>();
+    custom_type_registry.write().register::<gameplay_elements::wall::Box>();
     
     // custom_type_registry.write().register::<GlobalTransform>();
     // custom_type_registry.write().register::<Affine3A>();
