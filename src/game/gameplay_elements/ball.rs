@@ -57,8 +57,15 @@ fn golfball_added(
     for (entity, transform) in query.iter() {
         commands.entity(entity).insert((
             meshes.add(Mesh::try_from(shape::Icosphere{radius: 1., subdivisions: 5 }).unwrap()),
-            materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
-            SpatialBundle {
+            materials.add(StandardMaterial {
+                emissive: Color::rgb_linear(1.0, 1.0, 10.0),
+                ..default()
+            }),
+            PointLightBundle {
+                point_light: PointLight {
+                    shadows_enabled: false,
+                    ..default()
+                },
                 transform: *transform,
                 ..default()
             },

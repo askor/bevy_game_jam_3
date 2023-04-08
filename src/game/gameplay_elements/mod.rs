@@ -53,7 +53,10 @@ fn goal_added(
         let goals_dims = create_physical_box(2., 2., 2.);
         commands.entity(entity).insert((
             meshes.add(goals_dims.1),
-            materials.add(Color::rgb(0.9, 0.1, 0.1).into()),
+            materials.add(StandardMaterial {
+                emissive: Color::rgb_linear(1.0, 10.0, 1.0),
+                ..default()
+            }),
             SpatialBundle {
                 transform: *transform,
                 ..default()
