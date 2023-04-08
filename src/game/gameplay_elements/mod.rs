@@ -1,4 +1,5 @@
 pub mod launcher;
+pub mod ball;
 
 use std::default;
 
@@ -7,7 +8,7 @@ use bevy_rapier3d::prelude::*;
 use crate::AppState;
 use super::game_manager::GameState;
 
-use self::launcher::Launcher;
+use self::{launcher::Launcher, ball::GolfBallPlugin};
 pub use self::launcher::{LauncherPlugin, LaunchEvent};
 
 pub struct GameplayElementsPlugin;
@@ -16,13 +17,9 @@ impl Plugin for GameplayElementsPlugin {
     fn build(&self, app: &mut App) {
         app
             .add_plugin(LauncherPlugin)
+            .add_plugin(GolfBallPlugin)
             .register_type::<Goal>() // TODO remove?
-            .register_type::<GolfBall>()
             .register_type::<Box>()
-            .add_system(golfball_added
-                .in_set(OnUpdate(GameState::InProgress))
-                .in_set(OnUpdate(AppState::Playing))
-            )
             .add_system(goal_added
                 .in_set(OnUpdate(GameState::InProgress))
                 .in_set(OnUpdate(AppState::Playing))
@@ -35,37 +32,42 @@ impl Plugin for GameplayElementsPlugin {
     }
 }
 
+
+// mod ball {
+//     use crate::AppState::crate;
+
+//     #[derive(Component, Reflect, Default)]
+//     #[reflect(Component)]
+//     pub(crate) struct GolfBall;
+
+//     #[derive(Bundle)]
+//     pub(crate) struct GolfBallBundle {
+//         #[bundle]
+//         pub(crate) pbr: PbrBundle,
+//         pub(crate) name: Name,
+//         pub(crate) collider: Collider,
+//         pub(crate) restitution: Restitution,
+//         pub(crate) rigidbody: RigidBody,
+//         pub(crate) golf_ball: GolfBall,
+//     }
+
+//     impl Default for GolfBallBundle {
+//         fn default() -> Self {
+//             Self {
+//                 pbr: PbrBundle::default(),
+//                 name: Name::new("Golf ball"),
+//                 collider: Collider::ball(1.),
+//                 restitution: Restitution::new(1.),
+//                 rigidbody: RigidBody::Dynamic,
+//                 golf_ball: GolfBall, 
+//             }
+//         }
+//     }
+// }
+
 #[derive(Component, Reflect, Default)]
 #[reflect(Component)]
 pub(crate) struct Goal;
-
-#[derive(Component, Reflect, Default)]
-#[reflect(Component)]
-pub(crate) struct GolfBall;
-
-#[derive(Bundle)]
-struct GolfBallBundle {
-    #[bundle]
-    pbr: PbrBundle,
-    name: Name,
-    collider: Collider,
-    restitution: Restitution,
-    rigidbody: RigidBody,
-    golf_ball: GolfBall,
-}
-
-impl Default for GolfBallBundle {
-    fn default() -> Self {
-        Self {
-            pbr: PbrBundle::default(),
-            name: Name::new("Golf ball"),
-            collider: Collider::ball(1.),
-            restitution: Restitution::new(1.),
-            rigidbody: RigidBody::Dynamic,
-            golf_ball: GolfBall, 
-        }
-    }
-}
 
 #[derive(Component, Reflect, Default)]
 #[reflect(Component)]
@@ -73,32 +75,6 @@ pub(crate) struct Box {
     pub(crate) x: f32,
     pub(crate) y: f32,
     pub(crate) z: f32,
-}
-
-// On golfball added
-fn golfball_added(
-    query: Query<(Entity, &Transform), Added<GolfBall>>,
-    mut commands: Commands,
-    mut meshes: ResMut<Assets<Mesh>>,
-    mut materials: ResMut<Assets<StandardMaterial>>,
-) {
-    for (entity, transform) in query.iter() {
-        commands.entity(entity).insert((
-            meshes.add(Mesh::try_from(shape::Icosphere{radius: 1., subdivisions: 5 }).unwrap()),
-            materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
-            SpatialBundle {
-                transform: *transform,
-                ..default()
-            },
-            Collider::ball(1.),
-            Restitution::new(1.),
-            RigidBody::Dynamic,
-            // LockedAxes::all(),
-            // GravityScale(0.0),
-            // LaunchTimer(Timer::from_seconds(1.0, TimerMode::Repeating)),
-            Name::new("Ball"),
-        ));
-    }
 }
 
 // On Goal added

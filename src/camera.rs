@@ -3,7 +3,8 @@ use std::f32::consts::PI;
 use bevy::prelude::*;
 use smooth_bevy_cameras::{LookTransformBundle, LookTransform, Smoother, LookTransformPlugin, LookAngles};
 
-use crate::{AppState, game::gameplay_elements::{GolfBall, LaunchEvent}};
+use crate::{AppState, game::gameplay_elements::{LaunchEvent}};
+use crate::game::gameplay_elements::ball::GolfBall;
 
 pub struct InternalCameraPlugin;
 

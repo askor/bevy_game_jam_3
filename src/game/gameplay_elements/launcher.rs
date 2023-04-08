@@ -4,7 +4,9 @@ use leafwing_input_manager::prelude::*;
 
 use crate::{actions::Action, game::game_manager::GameState, AppState, loading::AudioAssets};
 
-use super::{GolfBall, create_physical_box, GolfBallBundle};
+use super::{create_physical_box};
+use super::ball::GolfBallBundle;
+use super::ball::GolfBall;
 
 pub struct LauncherPlugin;
 

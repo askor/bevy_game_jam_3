@@ -1,7 +1,8 @@
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 use crate::AppState;
-use super::gameplay_elements::{Goal, GolfBall, Box};
+use super::gameplay_elements::{Goal, Box};
+use super::gameplay_elements::ball::GolfBall;
 use crate::game::level::Level;
 
 pub struct LevelTestEnvironmentPlugin;

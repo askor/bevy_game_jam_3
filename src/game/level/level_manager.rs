@@ -1,6 +1,7 @@
 use std::{fs::File, io::Write};
 use bevy::{prelude::*, tasks::IoTaskPool, math::{Affine3A, Mat3A, Vec3A}};
-use crate::{game::{game_manager::GameState, gameplay_elements::{GolfBall, Goal, self, launcher::Launcher}}, AppState};
+use crate::{game::{game_manager::GameState, gameplay_elements::{Goal, self, launcher::Launcher}}, AppState};
+use crate::game::gameplay_elements::ball::GolfBall;
 
 pub struct LevelManagerPlugin;
 
