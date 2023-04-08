@@ -5,7 +5,7 @@
         "bevy_transform::components::transform::Transform": (
           translation: (
             x: 0.0,
-            y: 0.0,
+            y: 4.0,
             z: 0.0,
           ),
           rotation: (0.0, 0.0, 0.0, 1.0),
@@ -23,7 +23,7 @@
         "bevy_transform::components::transform::Transform": (
           translation: (
             x: 0.0,
-            y: 0.0,
+            y: 4.0,
             z: -40.0,
           ),
           rotation: (0.0, 0.0, 0.0, 1.0),
@@ -41,7 +41,7 @@
         "bevy_transform::components::transform::Transform": (
           translation: (
             x: 0.0,
-            y: -4.0,
+            y: 1.0,
             z: 0.0,
           ),
           rotation: (0.0, 0.0, 0.0, 1.0),
@@ -51,7 +51,7 @@
             z: 1.0,
           ),
         ),
-        "bevy_game_jam_3::game::gameplay_elements::Box": (
+        "bevy_game_jam_3::game::gameplay_elements::wall::Box": (
           x: 100.0,
           y: 1.0,
           z: 100.0,
