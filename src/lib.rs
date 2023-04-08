@@ -6,9 +6,11 @@ mod player;
 mod environment;
 mod game;
 mod tools;
+mod camera;
 
 use actions::ActionsPlugin;
 use audio::InternalAudioPlugin;
+use camera::InternalCameraPlugin;
 use loading::LoadingPlugin;
 use menu::MenuPlugin;
 use player::PlayerPlugin;
@@ -38,7 +40,8 @@ impl Plugin for AppPlugin {
             .add_plugin(MenuPlugin)
             .add_plugin(InternalAudioPlugin)
             .add_plugin(ActionsPlugin)
-            .add_plugin(PlayerPlugin)
+            // .add_plugin(PlayerPlugin)
+            .add_plugin(InternalCameraPlugin)
             .add_plugin(EnvironmentPlugin)
             .add_plugin(GamePlugin)
             

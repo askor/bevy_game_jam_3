@@ -8,7 +8,7 @@ pub struct InternalAudioPlugin;
 impl Plugin for InternalAudioPlugin {
     fn build(&self, app: &mut App) {
         app
-            .add_system(play_music.in_schedule(OnEnter(AppState::Playing)))
+            // .add_system(play_music.in_schedule(OnEnter(AppState::Playing)))
             // .add_system(play_music
             //     .in_set(OnUpdate(GameState::InProgress))
             //     .in_set(OnUpdate(AppState::Playing))
