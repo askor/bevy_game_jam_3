@@ -3,7 +3,7 @@ use std::f32::consts::PI;
 use bevy::prelude::*;
 use smooth_bevy_cameras::{LookTransformBundle, LookTransform, Smoother, LookTransformPlugin, LookAngles};
 
-use crate::{AppState, game::gameplay_elements::{LaunchEvent}};
+use crate::{AppState, game::{gameplay_elements::{LaunchEvent, launcher::Launcher}, GameState}};
 use crate::game::gameplay_elements::ball::GolfBall;
 
 pub struct InternalCameraPlugin;
@@ -15,6 +15,13 @@ impl Plugin for InternalCameraPlugin {
             .add_system(setup.in_schedule(OnEnter(AppState::Playing)))
             .add_system(ball_follow_camera
                 .in_set(OnUpdate(AppState::Playing))
+            )
+            .add_system(ball_follow_camera
+                .in_set(OnUpdate(AppState::Playing))
+            )
+            .add_system(reset_camera
+                .in_set(OnUpdate(AppState::Playing))
+                .in_set(OnUpdate(GameState::InProgress))
             )
             ;
     }
@@ -42,6 +49,30 @@ fn setup(
         MainCamera,
     ));
 }
+
+fn reset_camera(
+    mut commands: Commands,
+    launcher_q: Query<&Transform, Added<Launcher>>,
+    mut look_q: Query<&mut LookTransform, With<MainCamera>>,
+) {
+    for launcher_trans in launcher_q.iter() {
+        if let Ok(mut look) = look_q.get_single_mut() {
+            let delta = Vec2::new(0., PI / 16.);
+            let mut angles = LookAngles::from_vector(look.look_direction().unwrap());
+            angles.set_pitch(delta.y);
+            angles.set_yaw(delta.x);
+
+            let offset = 6.;
+
+            // Third-person.
+            look.eye = launcher_trans.translation + offset * angles.unit_vector();
+
+            look.target = launcher_trans.translation;
+        }
+    }
+}
+
+
 
 fn ball_follow_camera(
     ball_q: Query<&Transform, With<GolfBall>>,

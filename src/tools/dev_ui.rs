@@ -32,11 +32,14 @@ fn setup_ui(
             }
         });
         ui.label("Level Controls");
-        if ui.button("Reset").clicked() {
+        if ui.button("Standby").clicked() {
             world.resource_mut::<NextState<GameState>>().set(GameState::Standby);
         }
-        if ui.button("Start Game").clicked() {
+        if ui.button("InProgress").clicked() {
             world.resource_mut::<NextState<GameState>>().set(GameState::InProgress);
+        }
+        if ui.button("Complete game").clicked() {
+            world.resource_mut::<NextState<GameState>>().set(GameState::Complete);
         }
 
         ui.label("Launch velocity:");

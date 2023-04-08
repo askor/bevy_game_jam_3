@@ -14,6 +14,7 @@ impl Plugin for GolfBallPlugin {
                 .in_set(OnUpdate(AppState::Playing))
             )
             .add_system(clean_balls.in_schedule(OnExit(GameState::Complete)))
+            .add_system(clean_balls.in_schedule(OnEnter(GameState::InProgress)))
             ;
     }
 }
