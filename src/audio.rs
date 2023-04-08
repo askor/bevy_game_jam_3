@@ -17,10 +17,18 @@ impl Plugin for InternalAudioPlugin {
     }
 }
 
+// fn play_menu_music(
+//     assets: Res<AudioAssets>,
+//     audio: Res<Audio>,
+// ) {
+//     let music = assets.main_theme.clone();
+//     audio.play(music);
+// }
+
 fn play_music(
     assets: Res<AudioAssets>,
     audio: Res<Audio>,
 ) {
-    let music = assets.flog2.clone_weak();
+    let music = assets.main_theme.clone();
     audio.play(music);
 }
