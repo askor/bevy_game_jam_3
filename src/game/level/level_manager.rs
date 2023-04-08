@@ -25,8 +25,9 @@ fn clean_up_level(
     mut commands: Commands,
     query: Query<Entity, With<Level>>,
 ) {
-    let level = query.get_single().unwrap();
-    commands.entity(level).despawn_recursive();
+    for level in query.iter() {
+        commands.entity(level).despawn_recursive();
+    }
 }
 
 // save level (scene)

@@ -50,7 +50,7 @@ fn ball_follow_camera(
     if let Ok(ball_trans) = ball_q.get_single() {
         if let Ok(mut look) = camera_q.get_single_mut() {
             
-            let delta = Vec2::new(0., PI / 8.);
+            let delta = Vec2::new(0., PI / 16.);
             let mut angles = LookAngles::from_vector(look.look_direction().unwrap());
             angles.set_pitch(delta.y);
             angles.set_yaw(delta.x);
