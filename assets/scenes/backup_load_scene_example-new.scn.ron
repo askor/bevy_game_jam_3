@@ -5,25 +5,25 @@
         "bevy_transform::components::transform::Transform": (
           translation: (
             x: 0.0,
-            y: -1.6813343,
-            z: -38.58907,
+            y: 4.0,
+            z: 0.0,
           ),
-          rotation: (0.6511228, 0.0, 0.0, 0.75897235),
+          rotation: (0.0, 0.0, 0.0, 1.0),
           scale: (
             x: 1.0,
             y: 1.0,
             z: 1.0,
           ),
         ),
-        "bevy_game_jam_3::game::gameplay_elements::GolfBall": (),
+        "bevy_game_jam_3::game::gameplay_elements::launcher::Launcher": (),
       },
     ),
-    9: (
+    10: (
       components: {
         "bevy_transform::components::transform::Transform": (
           translation: (
             x: 0.0,
-            y: 0.0,
+            y: 4.0,
             z: -40.0,
           ),
           rotation: (0.0, 0.0, 0.0, 1.0),
@@ -36,12 +36,12 @@
         "bevy_game_jam_3::game::gameplay_elements::Goal": (),
       },
     ),
-    10: (
+    11: (
       components: {
         "bevy_transform::components::transform::Transform": (
           translation: (
             x: 0.0,
-            y: -4.0,
+            y: 1.0,
             z: 0.0,
           ),
           rotation: (0.0, 0.0, 0.0, 1.0),

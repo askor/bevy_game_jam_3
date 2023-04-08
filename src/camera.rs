@@ -1,6 +1,6 @@
 use std::f32::consts::PI;
 
-use bevy::prelude::*;
+use bevy::{prelude::*, core_pipeline::bloom::BloomSettings};
 use smooth_bevy_cameras::{LookTransformBundle, LookTransform, Smoother, LookTransformPlugin, LookAngles};
 
 use crate::{AppState, game::{gameplay_elements::{LaunchEvent, launcher::Launcher}, GameState}};
@@ -38,9 +38,14 @@ fn setup(
 
     commands.spawn((
         Camera3dBundle {
+            camera: Camera {
+                hdr: true,
+                ..default()
+            },
             transform: Transform::from_xyz(0., 2., 10.).looking_at(Vec3::new(0., 0., 0.), Vec3::Y),
             ..default()
         },
+        BloomSettings::default(),
         LookTransformBundle {
             transform: LookTransform::new(eye, target, Vec3::Y),
             smoother: Smoother::new(0.9),
