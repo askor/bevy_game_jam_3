@@ -71,15 +71,10 @@ fn aim_launcher(
     time: Res<Time>,
     mut rotation: Local<Vec2>,
 ) {
+    let sensitivity = 1.0;
     if let Ok((mut trans, action_state)) = query.get_single_mut() { 
         if action_state.pressed(Action::Aim) {
             let axis_pair = action_state.clamped_axis_pair(Action::Aim).unwrap();
-            // info!("AIM: {:?}", axis_pair);
-
-            let sensitivity = 1.0;
-
-            // let mut pitch = trans.rotation.xyz().y;
-            // let mut yaw = trans.rotation.xyz().x;
 
             rotation.y = sensitivity * axis_pair.y() * time.delta_seconds() + rotation.y;
             rotation.x = sensitivity * -axis_pair.x() * time.delta_seconds() + rotation.x;
@@ -92,8 +87,7 @@ fn aim_launcher(
 fn launch_ball(
     mut commands: Commands,
     launcher_q: Query<(&Transform, &ActionState<Action>), With<Launcher>>,
-    // mut ball_q: Query<(Entity, &mut Transform), (With<GolfBall>, Without<Launcher>)>,
-    mut q_locked_axes: Query<&mut LockedAxes>,
+    ball_q: Query<Entity, With<GolfBall>>,
     launc_vel: Res<LaunchVelocity>,
     mut launch_event: EventWriter<LaunchEvent>,
     mut meshes: ResMut<Assets<Mesh>>,
@@ -101,6 +95,9 @@ fn launch_ball(
 ) {
     if let Ok((launcher_trans, action_state)) = launcher_q.get_single() {
         if !action_state.just_pressed(Action::Shoot) { return; }
+
+        // Despawn other balls
+        for ball in ball_q.iter() { commands.entity(ball).despawn_recursive(); }
 
         // Spawn ball with physics
         let ball = commands.spawn(GolfBallBundle {
@@ -131,31 +128,31 @@ fn launch_ball(
 fn play_launch_sound(
     assets: Res<AudioAssets>,
     audio: Res<Audio>,
-    mut sound_index: Local<u8>,
+    // mut sound_index: Local<u8>,
 ) {
     let mut sound = assets.launch1.clone();
-    let sound_count = 4;
+    // let sound_count = 4;
 
-    if *sound_index == 0 {
-        sound = assets.launch1.clone();
-    }
-    else if *sound_index == 1 {
-        sound = assets.launch2.clone();
-    }
-    else if *sound_index == 2 {
-        sound = assets.launch3.clone();
-    }
-    else if *sound_index == 3 {
-        sound = assets.launch4.clone();
-    }
+    // if *sound_index == 0 {
+    //     sound = assets.launch1.clone();
+    // }
+    // else if *sound_index == 1 {
+    //     sound = assets.launch2.clone();
+    // }
+    // else if *sound_index == 2 {
+    //     sound = assets.launch3.clone();
+    // }
+    // else if *sound_index == 3 {
+    //     sound = assets.launch4.clone();
+    // }
 
     audio.play(sound);
 
     // Update index for new sound
-    *sound_index += 1;
-    if *sound_index > (sound_count -1) {
-        *sound_index = 1u8;
-    }
+    // *sound_index += 1;
+    // if *sound_index > (sound_count -1) {
+    //     *sound_index = 1u8;
+    // }
 }
 
 
