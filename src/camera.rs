@@ -55,20 +55,12 @@ fn ball_follow_camera(
             angles.set_pitch(delta.y);
             angles.set_yaw(delta.x);
 
+            let offset = look.radius().min(35.);
+
             // Third-person.
-            look.eye = look.target + 1.0 * look.radius() * angles.unit_vector();
+            look.eye = look.target + offset * angles.unit_vector();
 
             look.target = ball_trans.translation;
         }
     }
-}
-
-fn look_angles(mut transform: LookTransform, delta: Vec2) {
-    let mut angles = LookAngles::from_vector(transform.look_direction().unwrap());
-    angles.add_pitch(delta.y);
-    angles.add_yaw(delta.x);
-    // Third-person.
-    transform.eye = transform.target + 1.0 * transform.radius() * angles.unit_vector();
-    // First-person.
-    // transform.target = transform.eye + 1.0 * transform.radius() * angles.unit_vector();
 }
