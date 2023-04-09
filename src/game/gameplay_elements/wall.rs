@@ -10,9 +10,42 @@ pub(crate) struct Box {
     pub(crate) z: f32,
 }
 
+#[derive(Component, Reflect, Default)]
+#[reflect(Component)]
+pub(crate) struct PlainWall;
+
 // On Box added
 pub(crate) fn box_added(
-    query: Query<(Entity, &Box, &Transform), Added<Box>>,
+    query: Query<(Entity, &Box, &Transform), Added<PlainWall>>,
+    mut commands: Commands,
+    mut meshes: ResMut<Assets<Mesh>>,
+    mut materials: ResMut<Assets<StandardMaterial>>,
+) {
+    if let Ok((entity, box_dims, transform)) = query.get_single() {
+        let ground_dims = create_physical_box(box_dims.x, box_dims.y, box_dims.z);
+        commands.entity(entity).insert((
+            meshes.add(ground_dims.1),
+            materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
+            SpatialBundle {
+                transform: *transform,
+                ..default()
+            },
+            ground_dims.0, // Collider
+            ground_dims.2, // Box
+            RigidBody::Fixed,
+            Restitution::new(1.0)
+        ));
+    }
+}
+
+
+
+#[derive(Component, Reflect, Default)]
+#[reflect(Component)]
+pub(crate) struct BounceWall;
+
+pub(crate) fn bounce_wall_added(
+    query: Query<(Entity, &Box, &Transform), Added<BounceWall>>,
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,

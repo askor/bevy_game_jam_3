@@ -22,6 +22,7 @@ impl Plugin for GameplayElementsPlugin {
             .add_plugin(GolfBallPlugin)
             .register_type::<Goal>() // TODO remove?
             .register_type::<wall::Box>()
+            .register_type::<wall::PlainWall>()
             .register_type::<DeathZone>()
             .add_system(goal_added
                 .in_set(OnUpdate(GameState::InProgress))
@@ -40,7 +41,6 @@ impl Plugin for GameplayElementsPlugin {
 #[derive(Component, Reflect, Default)]
 #[reflect(Component)]
 pub(crate) struct Goal;
-
 
 // On Goal added
 fn goal_added(
