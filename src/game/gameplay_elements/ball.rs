@@ -10,7 +10,7 @@ impl Plugin for GolfBallPlugin {
         app
             .register_type::<GolfBall>()
             .add_system(golfball_added
-                .in_set(OnUpdate(GameState::InProgress))
+                // .in_set(OnUpdate(GameState::InProgress))
                 .in_set(OnUpdate(AppState::Playing))
             )
             .add_system(clean_balls.in_schedule(OnExit(GameState::Complete)))
