@@ -10,7 +10,7 @@ use bevy_rapier3d::prelude::*;
 use crate::AppState;
 use super::game_manager::GameState;
 
-use self::{launcher::Launcher, ball::GolfBallPlugin, death_zone::{DeathZone, cleanup_death_zone, add_death_zone}};
+use self::{launcher::Launcher, ball::GolfBallPlugin, death_zone::{DeathZone, cleanup_death_zone, add_death_zone}, wall::WallPlugin};
 pub use self::launcher::{LauncherPlugin, LaunchEvent};
 
 pub struct GameplayElementsPlugin;
@@ -20,15 +20,10 @@ impl Plugin for GameplayElementsPlugin {
         app
             .add_plugin(LauncherPlugin)
             .add_plugin(GolfBallPlugin)
+            .add_plugin(WallPlugin)
             .register_type::<Goal>() // TODO remove?
-            .register_type::<wall::Box>()
-            .register_type::<wall::PlainWall>()
             .register_type::<DeathZone>()
             .add_system(goal_added
-                .in_set(OnUpdate(GameState::InProgress))
-                .in_set(OnUpdate(AppState::Playing))
-            )
-            .add_system(wall::box_added
                 .in_set(OnUpdate(GameState::InProgress))
                 .in_set(OnUpdate(AppState::Playing))
             )

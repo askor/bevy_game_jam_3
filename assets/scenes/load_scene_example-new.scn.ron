@@ -59,5 +59,28 @@
         "bevy_game_jam_3::game::gameplay_elements::wall::PlainWall": (),
       },
     ),
+    12: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: 10.0,
+            y: 10.0,
+            z: -20.0,
+          ),
+          rotation: (0.0, 0.0, 0.0, 1.0),
+          scale: (
+            x: 1.0,
+            y: 1.5,
+            z: 1.0,
+          ),
+        ),
+        "bevy_game_jam_3::game::gameplay_elements::wall::Box": (
+          x: 1.0,
+          y: 20.0,
+          z: 20.0,
+        ),
+        "bevy_game_jam_3::game::gameplay_elements::wall::BounceWall": (),
+      },
+    ),
   },
 )
