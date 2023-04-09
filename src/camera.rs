@@ -77,8 +77,6 @@ fn reset_camera(
     }
 }
 
-
-
 fn ball_follow_camera(
     ball_q: Query<&Transform, With<GolfBall>>,
     mut camera_q: Query<&mut LookTransform, With<MainCamera>>,
@@ -91,7 +89,7 @@ fn ball_follow_camera(
             angles.set_pitch(delta.y);
             angles.set_yaw(delta.x);
 
-            let offset = look.radius().min(35.);
+            let offset = look.radius().clamp(10., 40.);
 
             // Third-person.
             look.eye = look.target + offset * angles.unit_vector();
