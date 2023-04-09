@@ -34,6 +34,7 @@ bevy_rapier3d = "*"
 bevy-inspector-egui = "0.18.3"
 leafwing-input-manager = "0.9.1"
 smooth-bevy-cameras = "0.8.0"
+bevy_starfield = "0.1.1"
 
 # keep the following in sync with Bevy's dependencies
 winit = { version = "0.28", default-features = false }

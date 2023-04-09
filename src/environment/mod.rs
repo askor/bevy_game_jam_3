@@ -4,6 +4,7 @@ mod physics_test_env;
 mod lighting;
 
 use bevy::prelude::*;
+use bevy_starfield::StarfieldPlugin;
 use test_env::TestEnvironmentPlugin;
 
 use self::{physics::PhysicsPlugin, physics_test_env::PhysicsTestEnvironmentPlugin, lighting::LightingPlugin};
@@ -15,6 +16,7 @@ impl Plugin for EnvironmentPlugin {
         app
             // .add_plugin(TestEnvironmentPlugin)
             // .add_plugin(PhysicsTestEnvironmentPlugin)
+            .add_plugin(StarfieldPlugin)
             .add_plugin(LightingPlugin)
             .add_plugin(PhysicsPlugin);
     }
