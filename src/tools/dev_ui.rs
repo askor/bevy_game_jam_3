@@ -8,7 +8,8 @@ pub struct DevUiPlugin;
 impl Plugin for DevUiPlugin {
     fn build(&self, app: &mut App) {
         app
-            .add_system(setup_ui);
+            .add_system(setup_ui)
+            ;
     }
 }
 
