@@ -16,7 +16,7 @@ impl Plugin for EnvironmentPlugin {
         app
             // .add_plugin(TestEnvironmentPlugin)
             // .add_plugin(PhysicsTestEnvironmentPlugin)
-            .add_plugin(StarfieldPlugin)
+            // .add_plugin(StarfieldPlugin)
             .add_plugin(LightingPlugin)
             .add_plugin(PhysicsPlugin);
     }
