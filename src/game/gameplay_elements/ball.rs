@@ -70,7 +70,7 @@ fn golfball_added(
                 ..default()
             },
             Collider::ball(1.),
-            Restitution::new(1.),
+            // Restitution::new(1.),
             RigidBody::Dynamic,
             // LockedAxes::all(),
             // GravityScale(0.0),

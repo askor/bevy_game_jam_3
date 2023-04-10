@@ -98,16 +98,19 @@ fn reset_camera(
     for launcher_trans in launcher_q.iter() {
         if let Ok(mut look) = look_q.get_single_mut() {
             let delta = Vec2::new(0., PI / 16.);
-            let mut angles = LookAngles::from_vector(look.look_direction().unwrap());
-            angles.set_pitch(delta.y);
-            angles.set_yaw(delta.x);
-
-            let offset = 6.;
-
-            // Third-person.
-            look.eye = launcher_trans.translation + offset * angles.unit_vector();
-
-            look.target = launcher_trans.translation;
+            // let mut angles = LookAngles::from_vector(look.look_direction().unwrap());
+            if let Some(dir) = look.look_direction() {
+                let mut angles = LookAngles::from_vector(dir);
+                angles.set_pitch(delta.y);
+                angles.set_yaw(delta.x);
+    
+                let offset = 6.;
+    
+                // Third-person.
+                look.eye = launcher_trans.translation + offset * angles.unit_vector();
+    
+                look.target = launcher_trans.translation;
+            }
         }
     }
 }
@@ -118,18 +121,21 @@ fn ball_follow_camera(
 ) {
     if let Ok(ball_trans) = ball_q.get_single() {
         if let Ok(mut look) = camera_q.get_single_mut() {
+            if let Some(dir) = look.look_direction() {
+                let mut angles = LookAngles::from_vector(dir);
             
-            let delta = Vec2::new(0., PI / 16.);
-            let mut angles = LookAngles::from_vector(look.look_direction().unwrap());
-            angles.set_pitch(delta.y);
-            angles.set_yaw(delta.x);
+                let delta = Vec2::new(0., PI / 16.);
+                // let mut angles = LookAngles::from_vector(look.look_direction().unwrap());
+                angles.set_pitch(delta.y);
+                angles.set_yaw(delta.x);
 
-            let offset = look.radius().clamp(10., 40.);
+                let offset = look.radius().clamp(10., 40.);
 
-            // Third-person.
-            look.eye = look.target + offset * angles.unit_vector();
+                // Third-person.
+                look.eye = look.target + offset * angles.unit_vector();
 
-            look.target = ball_trans.translation;
+                look.target = ball_trans.translation;
+            }
         }
     }
 }

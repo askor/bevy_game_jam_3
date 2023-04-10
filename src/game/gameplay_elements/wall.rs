@@ -68,7 +68,7 @@ pub(crate) fn plain_wall_added(
             ground_dims.0, // Collider
             ground_dims.2, // Box
             RigidBody::Fixed,
-            Restitution::new(1.0),
+            // Restitution::new(1.0),
             Name::new("Plain wall"),
         ));
     }
