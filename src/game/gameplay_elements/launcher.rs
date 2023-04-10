@@ -78,14 +78,12 @@ fn aim_launcher(
 ) {
     let sensitivity = 1.0;
     if let Ok((mut trans, action_state)) = query.get_single_mut() { 
-        if action_state.pressed(Action::Aim) {
-            let axis_pair = action_state.clamped_axis_pair(Action::Aim).unwrap();
+        let axis_pair = action_state.clamped_axis_pair(Action::Aim).unwrap();
 
-            rotation.y = sensitivity * axis_pair.y() * time.delta_seconds() + rotation.y;
-            rotation.x = sensitivity * -axis_pair.x() * time.delta_seconds() + rotation.x;
+        rotation.y = sensitivity * axis_pair.y() * time.delta_seconds() + rotation.y;
+        rotation.x = sensitivity * -axis_pair.x() * time.delta_seconds() + rotation.x;
 
-            trans.rotation = Quat::from_rotation_y(rotation.x) * Quat::from_rotation_x(rotation.y);
-        }
+        trans.rotation = Quat::from_rotation_y(rotation.x) * Quat::from_rotation_x(rotation.y);
     }
 }
 

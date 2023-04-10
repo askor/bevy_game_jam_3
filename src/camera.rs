@@ -88,10 +88,13 @@ fn setup(
 }
 
 fn reset_camera(
-    mut commands: Commands,
-    launcher_q: Query<&Transform, Added<Launcher>>,
+    launcher_q: Query<&Transform, With<Launcher>>,
     mut look_q: Query<&mut LookTransform, With<MainCamera>>,
+    ball_q: Query<&GolfBall>,
 ) {
+    if let Ok(_) = ball_q.get_single() {
+        return;
+    }
     for launcher_trans in launcher_q.iter() {
         if let Ok(mut look) = look_q.get_single_mut() {
             let delta = Vec2::new(0., PI / 16.);
