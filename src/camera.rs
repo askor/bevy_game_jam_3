@@ -98,16 +98,19 @@ fn reset_camera(
     for launcher_trans in launcher_q.iter() {
         if let Ok(mut look) = look_q.get_single_mut() {
             let delta = Vec2::new(0., PI / 16.);
-            let mut angles = LookAngles::from_vector(look.look_direction().unwrap());
-            angles.set_pitch(delta.y);
-            angles.set_yaw(delta.x);
-
-            let offset = 6.;
-
-            // Third-person.
-            look.eye = launcher_trans.translation + offset * angles.unit_vector();
-
-            look.target = launcher_trans.translation;
+            // let mut angles = LookAngles::from_vector(look.look_direction().unwrap());
+            if let Some(dir) = look.look_direction() {
+                let mut angles = LookAngles::from_vector(dir);
+                angles.set_pitch(delta.y);
+                angles.set_yaw(delta.x);
+    
+                let offset = 6.;
+    
+                // Third-person.
+                look.eye = launcher_trans.translation + offset * angles.unit_vector();
+    
+                look.target = launcher_trans.translation;
+            }
         }
     }
 }
