@@ -1,8 +1,8 @@
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
-use crate::{AppState, loading::FontAssets};
+use crate::{AppState, loading::FontAssets, menu::ButtonColors};
 
-use super::gameplay_elements::Goal;
+use super::{gameplay_elements::Goal, level::level_manager::LoadLevelEvent};
 
 #[derive(States, Default, Clone, Eq, PartialEq, Debug, Hash)]
 pub enum GameState {
@@ -22,6 +22,13 @@ impl Plugin for GameManagerPlugin {
             .add_event::<LevelCompletEvent>()
             .init_resource::<CurrentLevel>()
             .add_system(auto_start_game.in_schedule(OnEnter(AppState::Playing)))
+            .add_system(auto_end_level
+                .in_set(OnUpdate(GameState::Complete))
+            )
+            .add_system(auto_load_next_level
+                .in_set(OnUpdate(GameState::Standby))
+                .in_set(OnUpdate(AppState::Playing))
+            )
             .add_system(level_complete
                 .in_set(OnUpdate(GameState::InProgress))
                 .in_set(OnUpdate(AppState::Playing))
@@ -43,14 +50,52 @@ struct CurrentLevel {
 
 impl Default for CurrentLevel {
     fn default() -> Self {
-        Self { index: 0, shots: 0 }
+        Self { index: 1, shots: 0 }
+    }
+}
+
+#[derive(Resource)]
+struct NewLevelTimer {
+    timer: Timer,
+}
+
+impl Default for NewLevelTimer {
+    fn default() -> Self {
+        Self { timer: Timer::from_seconds(2.0, TimerMode::Once) }
     }
 }
 
 fn auto_start_game(
     mut state: ResMut<NextState<GameState>>,
+    mut events: EventWriter<LoadLevelEvent>,
 ) {
     state.set(GameState::InProgress);
+
+    events.send(LoadLevelEvent { level: 1 });
+}
+
+fn auto_load_next_level (
+    mut state: ResMut<NextState<GameState>>,
+    mut events: EventWriter<LoadLevelEvent>,
+    mut local: Local<NewLevelTimer>,
+    time: Res<Time>,
+) {
+    if local.timer.tick(time.delta()).finished() {
+        state.set(GameState::InProgress);
+        events.send(LoadLevelEvent { level: 2 });
+        local.timer.reset();
+    }
+}
+
+fn auto_end_level (
+    mut state: ResMut<NextState<GameState>>,
+    mut local: Local<NewLevelTimer>,
+    time: Res<Time>,
+) {
+    if local.timer.tick(time.delta()).finished() {
+        state.set(GameState::Standby);
+        local.timer.reset();
+    }
 }
 
 fn level_complete(
@@ -96,6 +141,8 @@ struct HudGameStatus;
 fn setup_hud(
     mut commands: Commands,
     fonts: Res<FontAssets>,
+    font_assets: Res<FontAssets>,
+    button_colors: Res<ButtonColors>,
 ) {
     info!("HUD");
     let font = fonts.fira_sans.clone();
@@ -104,11 +151,45 @@ fn setup_hud(
         font_size: 80.0,
         color: Color::rgb(200./256., 200./256., 200./256.),
     };
-    
+
+    // commands.spawn(NodeBundle {
+    //     style: Style {
+    //         justify_content: JustifyContent::SpaceAround,
+    //         align_items: AlignItems::Center,
+    //         ..default()
+    //     },
+    //     ..default()
+    // })
+    // .with_children(|cmd| {
+
+        
+    // });
+    // commands.spawn(ButtonBundle {
+    //     style: Style {
+    //         size: Size::new(Val::Px(120.0), Val::Px(50.0)),
+    //         margin: UiRect::all(Val::Auto),
+    //         justify_content: JustifyContent::Center,
+    //         align_items: AlignItems::Center,
+    //         ..Default::default()
+    //     },
+    //     background_color: button_colors.normal.into(),
+    //     ..Default::default()
+    // })
+    // .with_children(|parent| {
+    //     parent.spawn(TextBundle::from_section(
+    //         "Play",
+    //         TextStyle {
+    //             font: font_assets.fira_sans.clone(),
+    //             font_size: 40.0,
+    //             color: Color::rgb(0.9, 0.9, 0.9),
+    //         },
+    //     ));
+    // });
+
     commands.spawn(NodeBundle {
         style: Style {
             size: Size::new(Val::Percent(100.0), Val::Percent(100.0)),
-            justify_content: JustifyContent::SpaceBetween,
+            // justify_content: JustifyContent::SpaceBetween,
             ..default()
         },
         ..default()
@@ -121,17 +202,18 @@ fn setup_hud(
                 text_style.clone(),
             ).with_style(Style {
                 size: Size::new(Val::Undefined, Val::Px(100.)),
-                margin: UiRect {
-                    left: Val::Auto,
-                    right: Val::Px(10.0),
-                    top: Val::Px(6.0),
-                    bottom: Val::Auto,
-                },
+                // margin: UiRect {
+                //     left: Val::Auto,
+                //     right: Val::Px(10.0),
+                //     top: Val::Px(6.0),
+                //     bottom: Val::Auto,
+                // },
                 ..default()
             }),
             HudGameStatus,
         ));
     });
+    
 }
 
 fn cleanup_hud(
