@@ -1,6 +1,6 @@
 [package]
-name = "bevy_game_jam_3"
-version = "0.1.0"
+name = "ggolf"
+version = "0.1.1"
 publish = false
 authors = ["Askor"]
 edition = "2021"
