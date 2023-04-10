@@ -45,7 +45,7 @@ impl Plugin for GameManagerPlugin {
     }
 }
 
-const LEVEL_COUNT: usize = 2;
+const LEVEL_COUNT: usize = 3;
 
 #[derive(Resource)]
 struct CurrentLevel {
@@ -84,10 +84,11 @@ fn auto_load_next_level (
     mut events: EventWriter<LoadLevelEvent>,
     mut local: Local<NewLevelTimer>,
     time: Res<Time>,
+    res: Res<CurrentLevel>,
 ) {
     if local.timer.tick(time.delta()).finished() {
         state.set(GameState::InProgress);
-        events.send(LoadLevelEvent { level: 2 });
+        events.send(LoadLevelEvent { level: res.index });
         local.timer.reset();
     }
 }

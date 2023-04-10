@@ -70,6 +70,7 @@ fn golfball_added(
                 ..default()
             },
             Collider::ball(1.),
+            Damping { linear_damping: 0.01, angular_damping: 0.1 },
             // Restitution::new(1.),
             RigidBody::Dynamic,
             // LockedAxes::all(),
