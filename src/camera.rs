@@ -3,7 +3,7 @@ use std::f32::consts::PI;
 use bevy::{prelude::*, core_pipeline::bloom::BloomSettings};
 use smooth_bevy_cameras::{LookTransformBundle, LookTransform, Smoother, LookTransformPlugin, LookAngles};
 
-use crate::{AppState, game::{gameplay_elements::{LaunchEvent, launcher::Launcher}, GameState}};
+use crate::{AppState, game::{gameplay_elements::{LaunchEvent, launcher::Launcher}, GameState}, player::{FlyCam, NoCameraPlayerPlugin}};
 use crate::game::gameplay_elements::ball::GolfBall;
 
 pub struct InternalCameraPlugin;
@@ -12,18 +12,50 @@ impl Plugin for InternalCameraPlugin {
     fn build(&self, app: &mut App) {
         app
             .add_plugin(LookTransformPlugin)
+            .add_plugin(NoCameraPlayerPlugin)
+            .insert_resource(FreeCam(false))
             .add_system(setup.in_schedule(OnEnter(AppState::Playing)))
             .add_system(ball_follow_camera
                 .in_set(OnUpdate(AppState::Playing))
+                .run_if(not(free_cam))
             )
-            .add_system(ball_follow_camera
-                .in_set(OnUpdate(AppState::Playing))
-            )
+            // .add_system(ball_follow_camera
+            //     .in_set(OnUpdate(AppState::Playing))
+            //     .run_if(not(free_cam))
+            // )
             .add_system(reset_camera
                 .in_set(OnUpdate(AppState::Playing))
                 .in_set(OnUpdate(GameState::InProgress))
+                .run_if(not(free_cam))
             )
+            .add_system(toggle_freecam_stuff)
             ;
+    }
+}
+
+#[derive(Resource)]
+pub struct FreeCam(bool);
+
+pub fn free_cam(res: Res<FreeCam>) -> bool { res.0 }
+
+fn toggle_freecam_stuff (
+    mut commands: Commands,
+    query: Query<Entity, With<MainCamera>>,
+    mut free_cam: ResMut<FreeCam>,
+    keyboard_input: Res<Input<KeyCode>>,
+) {
+    if keyboard_input.just_pressed(KeyCode::T) {
+        if free_cam.0 {
+            let cam = query.single();
+            commands.entity(cam).remove::<FlyCam>();
+            commands.entity(cam).insert(LookTransform{ eye: Vec3::ZERO, target: Vec3::ZERO, up: Vec3::Y});
+            free_cam.0 = false;
+        } else {
+            let cam = query.single();
+            commands.entity(cam).insert(FlyCam);
+            commands.entity(cam).remove::<LookTransform>();
+            free_cam.0 = true;
+        }
     }
 }
 
