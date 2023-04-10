@@ -15,7 +15,7 @@
             z: 1.0,
           ),
         ),
-        "bevy_game_jam_3::game::gameplay_elements::launcher::Launcher": (),
+        "ggolf::game::gameplay_elements::launcher::Launcher": (),
       },
     ),
     11: (
@@ -33,12 +33,12 @@
             z: 1.0,
           ),
         ),
-        "bevy_game_jam_3::game::gameplay_elements::wall::Box": (
+        "ggolf::game::gameplay_elements::wall::Box": (
           x: 1.0,
           y: 20.0,
           z: 20.0,
         ),
-        "bevy_game_jam_3::game::gameplay_elements::wall::LowGravWall": (),
+        "ggolf::game::gameplay_elements::wall::LowGravWall": (),
       },
     ),
     13: (
@@ -56,7 +56,7 @@
             z: 1.0,
           ),
         ),
-        "bevy_game_jam_3::game::gameplay_elements::Goal": (),
+        "ggolf::game::gameplay_elements::Goal": (),
       },
     ),
     14: (
@@ -74,12 +74,12 @@
             z: 1.0,
           ),
         ),
-        "bevy_game_jam_3::game::gameplay_elements::wall::Box": (
+        "ggolf::game::gameplay_elements::wall::Box": (
           x: 1.0,
           y: 20.0,
           z: 50.0,
         ),
-        "bevy_game_jam_3::game::gameplay_elements::wall::BounceWall": (),
+        "ggolf::game::gameplay_elements::wall::BounceWall": (),
       },
     ),
     15: (
@@ -97,12 +97,12 @@
             z: 1.0,
           ),
         ),
-        "bevy_game_jam_3::game::gameplay_elements::wall::Box": (
+        "ggolf::game::gameplay_elements::wall::Box": (
           x: 100.0,
           y: 1.0,
           z: 100.0,
         ),
-        "bevy_game_jam_3::game::gameplay_elements::wall::PlainWall": (),
+        "ggolf::game::gameplay_elements::wall::PlainWall": (),
       },
     ),
   },
