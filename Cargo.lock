@@ -591,23 +591,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "bevy_game_jam_3"
-version = "0.1.0"
-dependencies = [
- "bevy",
- "bevy-inspector-egui",
- "bevy_asset_loader",
- "bevy_rapier3d",
- "bevy_starfield",
- "embed-resource",
- "image",
- "leafwing-input-manager",
- "rand",
- "smooth-bevy-cameras",
- "winit",
-]
-
-[[package]]
 name = "bevy_gilrs"
 version = "0.10.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1829,6 +1812,23 @@ dependencies = [
  "libc",
  "wasi",
  "wasm-bindgen",
+]
+
+[[package]]
+name = "ggolf"
+version = "0.1.1"
+dependencies = [
+ "bevy",
+ "bevy-inspector-egui",
+ "bevy_asset_loader",
+ "bevy_rapier3d",
+ "bevy_starfield",
+ "embed-resource",
+ "image",
+ "leafwing-input-manager",
+ "rand",
+ "smooth-bevy-cameras",
+ "winit",
 ]
 
 [[package]]

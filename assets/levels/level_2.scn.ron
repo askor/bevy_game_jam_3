@@ -77,7 +77,7 @@
         "bevy_game_jam_3::game::gameplay_elements::wall::Box": (
           x: 1.0,
           y: 20.0,
-          z: 20.0,
+          z: 50.0,
         ),
         "bevy_game_jam_3::game::gameplay_elements::wall::BounceWall": (),
       },

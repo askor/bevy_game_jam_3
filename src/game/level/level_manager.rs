@@ -9,8 +9,10 @@ impl Plugin for LevelManagerPlugin {
     fn build(&self, app: &mut App) {
         app
             .add_event::<SaveLevelEvent>()
+            .add_event::<LoadLevelEvent>()
             .add_system(save_scene_system.run_if(on_event::<SaveLevelEvent>()))
-            .add_system(load_scene_system.in_schedule(OnEnter(GameState::InProgress)))
+            // .add_system(load_scene_system.in_schedule(OnEnter(GameState::InProgress)))
+            .add_system(load_scene_system)
             .add_system(clean_up_level.in_schedule(OnExit(GameState::Complete)))
             ;
     }
@@ -18,6 +20,9 @@ impl Plugin for LevelManagerPlugin {
 
 pub struct SaveLevelEvent{
     pub name: String,
+}
+pub struct LoadLevelEvent {
+    pub level: usize,
 }
 
 // clean up level
@@ -36,19 +41,26 @@ fn clean_up_level(
 pub struct Level;
 
 // const NEW_SCENE_FILE_PATH: &str = "scenes/load_scene_example-new.scn.ron";
-const NEW_SCENE_FILE_PATH: &str = "levels/new_level1.scn.ron";
+const NEW_SCENE_FILE_PATH: &str = "levels/level_1.scn.ron";
 
 // load level
-fn load_scene_system(mut commands: Commands, asset_server: Res<AssetServer>) {
-    commands.spawn((
-        Level,
-        DynamicSceneBundle {
-            scene: asset_server.load(NEW_SCENE_FILE_PATH),
-            visibility: Visibility::Visible,
-            ..default()
-        },
-        Name::new("Level"),
-    ));
+fn load_scene_system(
+    mut commands: Commands,
+    asset_server: Res<AssetServer>,
+    mut events: EventReader<LoadLevelEvent>,
+) {
+    for event in events.iter() {
+        info!("Loading level!");
+        commands.spawn((
+            Level,
+            DynamicSceneBundle {
+                scene: asset_server.load(format!("levels/level_{}.scn.ron", event.level)),
+                visibility: Visibility::Visible,
+                ..default()
+            },
+            Name::new("Level"),
+        ));
+    }
 }
 
 fn save_scene_system(

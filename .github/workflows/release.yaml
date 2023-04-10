@@ -15,8 +15,8 @@ on:
 env:
   # heads-up: this value is used as a pattern in an sed command as a workaround for a trunk issue
   #   if you use special characters, take a look at the 'Make paths relative' step in the 'build-web' job
-  GAME_EXECUTABLE_NAME: bevy_game_jam_3
-  GAME_OSX_APP_NAME: BevyGameJam3
+  GAME_EXECUTABLE_NAME: ggolf
+  GAME_OSX_APP_NAME: GGolf
   itch_target: askur.itch.io/ggolf
 
 permissions:
