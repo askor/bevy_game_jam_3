@@ -1,14 +1,15 @@
 use bevy::{prelude::*, window::PrimaryWindow};
 use bevy_inspector_egui::{egui::{self, Visuals}, bevy_egui::EguiContext};
 
-use crate::game::{level::{level_manager::SaveLevelEvent, Level}, gameplay_elements::{LaunchEvent, launcher::LaunchVelocity, wall::{LowGravWall, BounceWall, PlainWall, Box}}, GameState};
+use crate::{game::{level::{level_manager::SaveLevelEvent, Level}, gameplay_elements::{LaunchEvent, launcher::LaunchVelocity, wall::{LowGravWall, BounceWall, PlainWall, Box}}, GameState}, camera::free_cam};
 
 pub struct DevUiPlugin;
 
 impl Plugin for DevUiPlugin {
     fn build(&self, app: &mut App) {
         app
-            .add_system(setup_ui)
+            .add_system(setup_ui
+            )
             ;
     }
 }
