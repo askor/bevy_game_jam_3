@@ -12,8 +12,14 @@ impl Plugin for DevUiPlugin {
     }
 }
 
+#[derive(Default)]
+struct UiState {
+    name_input: String,
+}
+
 fn setup_ui(
     world: &mut World,
+    mut state: Local<UiState>,
 ) {
     let mut egui_context = world
         .query_filtered::<&mut EguiContext, With<PrimaryWindow>>()
@@ -23,9 +29,10 @@ fn setup_ui(
     egui::Window::new("Settings").show(egui_context.get_mut(), |ui| {
         ui.ctx().set_visuals(Visuals::light());
         ui.label("Level");
+        ui.text_edit_singleline(&mut state.name_input);
         ui.horizontal(|ui| {
             if ui.button("Save").clicked() {
-                world.send_event::<SaveLevelEvent>(SaveLevelEvent);
+                world.send_event::<SaveLevelEvent>(SaveLevelEvent {name: state.name_input.to_string() });
             }
             if ui.button("Load").clicked() {
                 info!("Button 2 clicked!");

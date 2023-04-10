@@ -1,6 +1,6 @@
 use std::{fs::File, io::Write};
 use bevy::{prelude::*, tasks::IoTaskPool, math::{Affine3A, Mat3A, Vec3A}};
-use crate::{game::{game_manager::GameState, gameplay_elements::{Goal, self, launcher::Launcher}}, AppState};
+use crate::{game::{game_manager::GameState, gameplay_elements::{Goal, self, launcher::Launcher, wall}}, AppState};
 use crate::game::gameplay_elements::ball::GolfBall;
 
 pub struct LevelManagerPlugin;
@@ -16,9 +16,9 @@ impl Plugin for LevelManagerPlugin {
     }
 }
 
-pub struct SaveLevelEvent;
-
-// Current level
+pub struct SaveLevelEvent{
+    pub name: String,
+}
 
 // clean up level
 fn clean_up_level(
@@ -35,7 +35,8 @@ fn clean_up_level(
 #[reflect(Component)]
 pub struct Level;
 
-const NEW_SCENE_FILE_PATH: &str = "scenes/load_scene_example-new.scn.ron";
+// const NEW_SCENE_FILE_PATH: &str = "scenes/load_scene_example-new.scn.ron";
+const NEW_SCENE_FILE_PATH: &str = "levels/new_level1.scn.ron";
 
 // load level
 fn load_scene_system(mut commands: Commands, asset_server: Res<AssetServer>) {
@@ -51,10 +52,17 @@ fn load_scene_system(mut commands: Commands, asset_server: Res<AssetServer>) {
 }
 
 fn save_scene_system(
-    // mut events: EventReader<SaveLevelEvent>,
     world: &mut World,
 ) {
     info!("Saving!");
+
+    let events = world.resource::<Events<SaveLevelEvent>>();
+    let mut event_reader = events.get_reader();
+    // let filename = event_reader.iter(SaveLevelEvent).last();
+
+    let name = event_reader.iter(events).last().unwrap().name.clone();
+
+    info!("Name {}", name);
 
     let custom_type_registry = AppTypeRegistry::default();
 
@@ -62,7 +70,10 @@ fn save_scene_system(
     custom_type_registry.write().register::<GolfBall>();
     custom_type_registry.write().register::<Launcher>();
     custom_type_registry.write().register::<Goal>();
-    custom_type_registry.write().register::<gameplay_elements::wall::Box>();
+    custom_type_registry.write().register::<wall::Box>();
+    custom_type_registry.write().register::<wall::PlainWall>();
+    custom_type_registry.write().register::<wall::BounceWall>();
+    custom_type_registry.write().register::<wall::LowGravWall>();
     
     // custom_type_registry.write().register::<GlobalTransform>();
     // custom_type_registry.write().register::<Affine3A>();
@@ -72,8 +83,6 @@ fn save_scene_system(
     custom_type_registry.write().register::<Transform>();
     custom_type_registry.write().register::<Vec3>();
     custom_type_registry.write().register::<Quat>();
-
-    let type_registry = world.resource::<AppTypeRegistry>().clone();
 
     info!("After builder");
 
@@ -113,7 +122,7 @@ fn save_scene_system(
     IoTaskPool::get()
         .spawn(async move {
             // Write the scene RON data to file
-            File::create(format!("assets/{NEW_SCENE_FILE_PATH}"))
+            File::create(format!("assets/levels/{name}.scn.ron"))
                 .and_then(|mut file| file.write(serialized_scene.as_bytes()))
                 .expect("Error while writing scene to file");
         })

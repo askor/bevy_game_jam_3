@@ -20,6 +20,7 @@ impl Plugin for GameManagerPlugin {
         app
             .add_state::<GameState>()
             .add_event::<LevelCompletEvent>()
+            .init_resource::<CurrentLevel>()
             .add_system(auto_start_game.in_schedule(OnEnter(AppState::Playing)))
             .add_system(level_complete
                 .in_set(OnUpdate(GameState::InProgress))
@@ -31,6 +32,18 @@ impl Plugin for GameManagerPlugin {
             .add_system(setup_hud.in_schedule(OnEnter(AppState::Playing)))
             .add_system(cleanup_hud.in_schedule(OnExit(AppState::Playing)))
             ;
+    }
+}
+
+#[derive(Resource)]
+struct CurrentLevel {
+    index: usize,
+    shots: usize,
+}
+
+impl Default for CurrentLevel {
+    fn default() -> Self {
+        Self { index: 0, shots: 0 }
     }
 }
 

@@ -50,7 +50,7 @@ fn launcher_added(
             meshes.add(Mesh::try_from(box_dims.1).unwrap()),
             materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
             SpatialBundle {
-                transform: *transform,
+                transform: Transform::from_translation(transform.translation),
                 ..default()
             },
             InputManagerBundle {
