@@ -12,6 +12,7 @@ pub enum GameState {
     Complete,
 }
 pub struct LevelCompletEvent;
+pub struct GameCompleteEvent;
 
 pub struct GameManagerPlugin;
 
@@ -20,6 +21,7 @@ impl Plugin for GameManagerPlugin {
         app
             .add_state::<GameState>()
             .add_event::<LevelCompletEvent>()
+            .add_event::<GameCompleteEvent>()
             .init_resource::<CurrentLevel>()
             .add_system(auto_start_game.in_schedule(OnEnter(AppState::Playing)))
             .add_system(auto_end_level
@@ -33,6 +35,7 @@ impl Plugin for GameManagerPlugin {
                 .in_set(OnUpdate(GameState::InProgress))
                 .in_set(OnUpdate(AppState::Playing))
             )
+            .add_system(hud_game_complete.run_if(on_event::<GameCompleteEvent>()))
             .add_system(hud_level_complete.run_if(on_event::<LevelCompletEvent>()))
             // .add_system(hud_level_complete.in_schedule(OnEnter(GameState::Complete)))
             .add_system(hud_status_reset.in_schedule(OnExit(GameState::Complete)))
@@ -41,6 +44,8 @@ impl Plugin for GameManagerPlugin {
             ;
     }
 }
+
+const LEVEL_COUNT: usize = 2;
 
 #[derive(Resource)]
 struct CurrentLevel {
@@ -91,10 +96,18 @@ fn auto_end_level (
     mut state: ResMut<NextState<GameState>>,
     mut local: Local<NewLevelTimer>,
     time: Res<Time>,
+    mut current_level: ResMut<CurrentLevel>,
+    mut game_complete: EventWriter<GameCompleteEvent>,
 ) {
-    if local.timer.tick(time.delta()).finished() {
-        state.set(GameState::Standby);
-        local.timer.reset();
+    if local.timer.tick(time.delta()).just_finished() {
+        current_level.index +=1;
+        if current_level.index > LEVEL_COUNT {
+            info!("GAME COMPLETE");
+            game_complete.send(GameCompleteEvent);
+        } else {
+            local.timer.reset();
+            state.set(GameState::Standby);
+        }
     }
 }
 
@@ -116,6 +129,14 @@ fn level_complete(
             },
             CollisionEvent::Stopped(_, _, _) => (),
         }
+    }
+}
+
+fn hud_game_complete(
+    mut text_query: Query<&mut Text>,
+) {
+    for mut text in text_query.iter_mut() {
+        text.sections[0].value = "ALL LEVELS COMPLETE".to_string();
     }
 }
 
@@ -189,7 +210,7 @@ fn setup_hud(
     commands.spawn(NodeBundle {
         style: Style {
             size: Size::new(Val::Percent(100.0), Val::Percent(100.0)),
-            // justify_content: JustifyContent::SpaceBetween,
+            justify_content: JustifyContent::Center,
             ..default()
         },
         ..default()
