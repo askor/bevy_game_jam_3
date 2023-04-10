@@ -31,12 +31,18 @@ impl Plugin for WallPlugin {
     }
 }
 
-#[derive(Component, Reflect, Default)]
+#[derive(Component, Reflect)]
 #[reflect(Component)]
 pub(crate) struct Box {
     pub(crate) x: f32,
     pub(crate) y: f32,
     pub(crate) z: f32,
+}
+
+impl Default for Box {
+    fn default() -> Self {
+        Self { x: 1.0, y: 20., z: 20. }
+    }
 }
 
 #[derive(Component, Reflect, Default)]
