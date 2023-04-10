@@ -1,8 +1,11 @@
-use bevy::prelude::*;
+use std::ops::{Deref, DerefMut};
+
+use bevy::{prelude::*, transform};
 use bevy_rapier3d::prelude::{LockedAxes, Velocity};
 use leafwing_input_manager::prelude::*;
 
 use crate::camera::free_cam;
+use crate::game::level::Level;
 use crate::{actions::Action, game::game_manager::GameState, AppState, loading::AudioAssets};
 
 use super::{create_physical_box};
@@ -16,8 +19,12 @@ impl Plugin for LauncherPlugin {
         app
             .add_event::<LaunchEvent>()
             .register_type::<Launcher>()
-            .insert_resource(LaunchVelocity(30.0))
+            .insert_resource(LaunchVelocity(50.0))
             .add_system(launcher_added
+                .in_set(OnUpdate(GameState::InProgress))
+                .in_set(OnUpdate(AppState::Playing))
+            )
+            .add_system(ball_stopped
                 .in_set(OnUpdate(GameState::InProgress))
                 .in_set(OnUpdate(AppState::Playing))
             )
@@ -97,31 +104,58 @@ fn launch_ball(
     mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
     if let Ok((launcher_trans, action_state)) = launcher_q.get_single() {
-        if !action_state.just_pressed(Action::Shoot) { return; }
+        if action_state.just_released(Action::Shoot) {
+            // Despawn other balls
+            for ball in ball_q.iter() { commands.entity(ball).despawn_recursive(); }
 
-        // Despawn other balls
-        for ball in ball_q.iter() { commands.entity(ball).despawn_recursive(); }
-
-        // Spawn ball with physics
-        let ball = commands.spawn(GolfBallBundle {
-            pbr: PbrBundle {
-                mesh: meshes.add(Mesh::try_from(shape::Icosphere{radius: 1., subdivisions: 5 }).unwrap()),
-                material: materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
-                transform: launcher_trans.clone(),
+            // Spawn ball with physics
+            let ball = commands.spawn(GolfBallBundle {
+                pbr: PbrBundle {
+                    mesh: meshes.add(Mesh::try_from(shape::Icosphere{radius: 1., subdivisions: 5 }).unwrap()),
+                    material: materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
+                    transform: launcher_trans.clone(),
+                    ..default()
+                },
                 ..default()
-            },
-            ..default()
-        }).id();
+            }).id();
 
-        let velocity = launcher_trans.forward() * launc_vel.0;
+            let velocity = launcher_trans.forward() * launc_vel.0 * action_state.previous_duration(Action::Shoot).as_secs_f32().min(2.0);
         
-        commands.entity(ball).insert( Velocity{ linvel: velocity, angvel: Vec3::ZERO });
-        launch_event.send(LaunchEvent);
+            commands.entity(ball).insert( Velocity{ linvel: velocity, angvel: Vec3::ZERO });
+            launch_event.send(LaunchEvent);
 
-        info!("Launch!");
-        // Free ball axes
-        // let mut axes = q_locked_axes.get_mut(entity).unwrap();
-        // axes.toggle(LockedAxes::all());
+            info!("Launch!");
+            // Free ball axes
+            // let mut axes = q_locked_axes.get_mut(entity).unwrap();
+            // axes.toggle(LockedAxes::all());
+        }
+    }
+}
+
+fn ball_stopped (
+    mut commands: Commands,
+    ball_q: Query<(Entity, &Transform), With<GolfBall>>,
+    launcher_q: Query<Entity, With<Launcher>>,
+    level_q: Query<Entity, With<Level>>,
+    mut last_pos: Local<Vec3>,
+) {
+    for (ball, transform) in ball_q.iter() {
+        // info!("Ball stopped!");
+        if transform.translation.distance_squared(*last_pos) < 0.001 {
+            info!("Stopped ball!");
+
+            for entity in launcher_q.iter() {
+                commands.entity(entity).despawn_recursive();
+            }
+            let level = level_q.single();
+            let launcher = commands.spawn((
+                Launcher,
+                SpatialBundle { transform: *transform, ..default() },
+            )).id();
+            commands.entity(level).add_child(launcher);
+            commands.entity(ball).despawn_recursive();
+        }
+        *last_pos = transform.translation;
     }
 }
 
