@@ -1,0 +1,109 @@
+(
+  entities: {
+    11: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: 0.0,
+            y: 1.0,
+            z: 0.0,
+          ),
+          rotation: (0.0, 0.0, 0.0, 1.0),
+          scale: (
+            x: 1.0,
+            y: 1.0,
+            z: 1.0,
+          ),
+        ),
+        "ggolf::game::gameplay_elements::wall::Box": (
+          x: 40.0,
+          y: 1.0,
+          z: 40.0,
+        ),
+        "ggolf::game::gameplay_elements::wall::PlainWall": (),
+      },
+    ),
+    12: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: 0.0,
+            y: 22.0,
+            z: -293.0,
+          ),
+          rotation: (0.0, 0.0, 0.0, 1.0),
+          scale: (
+            x: 1.0,
+            y: 1.0,
+            z: 1.0,
+          ),
+        ),
+        "ggolf::game::gameplay_elements::Goal": (),
+      },
+    ),
+    13: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: 0.0,
+            y: 4.0,
+            z: 0.0,
+          ),
+          rotation: (0.0, 0.0, 0.0, 1.0),
+          scale: (
+            x: 1.0,
+            y: 1.0,
+            z: 1.0,
+          ),
+        ),
+        "ggolf::game::gameplay_elements::launcher::Launcher": (),
+      },
+    ),
+    14: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: 0.0,
+            y: 1.0,
+            z: -100.0,
+          ),
+          rotation: (0.0, 0.0, 0.0, 1.0),
+          scale: (
+            x: 1.0,
+            y: 1.0,
+            z: 1.0,
+          ),
+        ),
+        "ggolf::game::gameplay_elements::wall::Box": (
+          x: 40.0,
+          y: 1.0,
+          z: 100.0,
+        ),
+        "ggolf::game::gameplay_elements::wall::PlainWall": (),
+      },
+    ),
+    15: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: 0.0,
+            y: 10.2,
+            z: -237.0,
+          ),
+          rotation: (0.0, 0.0, 0.0, 1.0),
+          scale: (
+            x: 1.0,
+            y: 1.0,
+            z: 1.0,
+          ),
+        ),
+        "ggolf::game::gameplay_elements::wall::Box": (
+          x: 40.0,
+          y: 20.0,
+          z: 120.0,
+        ),
+        "ggolf::game::gameplay_elements::wall::PlainWall": (),
+      },
+    ),
+  },
+)
