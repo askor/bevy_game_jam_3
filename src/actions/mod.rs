@@ -12,10 +12,6 @@ impl Plugin for ActionsPlugin {
 #[derive(Actionlike, PartialEq, Eq, Clone, Copy, Hash, Debug)]
 pub enum Action {
     Aim,
-    // Left,
-    // Right,
-    // Up,
-    // Down,
-
+    RotateCamera,
     Shoot,
 }

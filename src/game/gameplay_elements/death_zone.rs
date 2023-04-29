@@ -1,4 +1,4 @@
-use super::{create_physical_box, ball::GolfBall};
+use super::{create_physical_box, ball::{GolfBall, BallState}};
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 
@@ -42,20 +42,12 @@ pub(crate) fn add_death_zone(
     ));
 }
 
-pub(crate) fn cleanup_death_zone(
-    mut commands: Commands,
-    query: Query<Entity, With<DeathZone>>,
-) {
-    for entity in query.iter() {
-        commands.entity(entity).despawn_recursive();
-    }
-}
-
 fn death_zone_collision(
     mut commands: Commands,
     mut collisions: EventReader<CollisionEvent>,
     q_death_zone: Query<Entity, With<DeathZone>>,
     q_ball: Query<Entity, With<GolfBall>>,
+    mut ball_state: ResMut<NextState<BallState>>,
 ) {
     for collision in collisions.iter() {
         info!("Death collisioon!");
@@ -66,9 +58,19 @@ fn death_zone_collision(
                     info!("Dead!");
                     let ball = q_ball.single();
                     commands.entity(ball).despawn_recursive();
+                    ball_state.set(BallState::Dead);
                 }
             },
             CollisionEvent::Stopped(_, _, _) => (),
         }
+    }
+}
+
+pub(crate) fn cleanup_death_zone(
+    mut commands: Commands,
+    query: Query<Entity, With<DeathZone>>,
+) {
+    for entity in query.iter() {
+        commands.entity(entity).despawn_recursive();
     }
 }

@@ -4,12 +4,12 @@ use bevy::{prelude::*, transform};
 use bevy_rapier3d::prelude::{LockedAxes, Velocity};
 use leafwing_input_manager::prelude::*;
 
-use crate::camera::free_cam;
+use crate::camera::{free_cam, Focus};
 use crate::game::level::Level;
 use crate::{actions::Action, game::game_manager::GameState, AppState, loading::AudioAssets};
 
 use super::{create_physical_box};
-use super::ball::GolfBallBundle;
+use super::ball::{GolfBallBundle, BallState};
 use super::ball::GolfBall;
 
 pub struct LauncherPlugin;
@@ -32,6 +32,7 @@ impl Plugin for LauncherPlugin {
             .add_system(launch_ball.run_if(not(free_cam)))
             .add_system(aim_launcher
                 .run_if(not(free_cam))
+                // .in_set(OnUpdate(BallState::Aiming))
             )
             .add_system(launch_countdown);
     }
@@ -67,11 +68,13 @@ fn launcher_added(
                 action_state: ActionState::default(),
                 input_map: InputMap::default()
                     .insert(DualAxis::left_stick(), Action::Aim)
-                    // .insert(VirtualDPad::wasd(), Action::Aim)
-                    .insert(VirtualDPad::arrow_keys(), Action::Aim)
+                    .insert(VirtualDPad::wasd(), Action::Aim)
+                    // .insert(VirtualDPad::arrow_keys(), Action::Aim)
                     .insert(KeyCode::Space, Action::Shoot)
+                    .insert(GamepadButtonType::South, Action::Shoot)
                     .build(),
             },
+            Focus,
             Launcher,
             Name::new("Launcher"),
         ));
@@ -96,14 +99,15 @@ fn aim_launcher(
 
 fn launch_ball(
     mut commands: Commands,
-    launcher_q: Query<(&Transform, &ActionState<Action>), With<Launcher>>,
+    launcher_q: Query<(&Transform, &ActionState<Action>, Entity), With<Launcher>>,
     ball_q: Query<Entity, With<GolfBall>>,
     launc_vel: Res<LaunchVelocity>,
     mut launch_event: EventWriter<LaunchEvent>,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
+    mut ball_state: ResMut<NextState<BallState>>,
 ) {
-    if let Ok((launcher_trans, action_state)) = launcher_q.get_single() {
+    if let Ok((launcher_trans, action_state, entity)) = launcher_q.get_single() {
         if action_state.just_released(Action::Shoot) {
             // Despawn other balls
             for ball in ball_q.iter() { commands.entity(ball).despawn_recursive(); }
@@ -117,12 +121,16 @@ fn launch_ball(
                     ..default()
                 },
                 ..default()
-            }).id();
+            }).insert(Focus)
+            .id();
 
             let velocity = launcher_trans.forward() * launc_vel.0 * action_state.previous_duration(Action::Shoot).as_secs_f32().min(2.0);
         
             commands.entity(ball).insert( Velocity{ linvel: velocity, angvel: Vec3::ZERO });
             launch_event.send(LaunchEvent);
+            ball_state.set(BallState::InPlay);
+
+            commands.entity(entity).remove::<Focus>();
 
             info!("Launch!");
             // Free ball axes
@@ -138,6 +146,7 @@ fn ball_stopped (
     launcher_q: Query<Entity, With<Launcher>>,
     level_q: Query<Entity, With<Level>>,
     mut last_pos: Local<Vec3>,
+    mut ball_state: ResMut<NextState<BallState>>,
 ) {
     for (ball, transform) in ball_q.iter() {
         // info!("Ball stopped!");
@@ -152,12 +161,16 @@ fn ball_stopped (
                 Launcher,
                 SpatialBundle { transform: *transform, ..default() },
             )).id();
+            ball_state.set(BallState::Aiming);
             commands.entity(level).add_child(launcher);
             commands.entity(ball).despawn_recursive();
         }
         *last_pos = transform.translation;
     }
 }
+
+
+// Control camera
 
 
 /////////////////////////////////////////////////////////

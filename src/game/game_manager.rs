@@ -2,7 +2,7 @@ use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 use crate::{AppState, loading::FontAssets, menu::ButtonColors};
 
-use super::{gameplay_elements::Goal, level::level_manager::LoadLevelEvent};
+use super::{level::level_manager::LoadLevelEvent, gameplay_elements::{goal::Goal, ball::BallState}};
 
 #[derive(States, Default, Clone, Eq, PartialEq, Debug, Hash)]
 pub enum GameState {
@@ -23,7 +23,7 @@ impl Plugin for GameManagerPlugin {
             .add_event::<LevelCompletEvent>()
             .add_event::<GameCompleteEvent>()
             .init_resource::<CurrentLevel>()
-            .add_system(auto_start_game.in_schedule(OnEnter(AppState::Playing)))
+            .add_system(auto_start_first_game.in_schedule(OnEnter(AppState::Playing)))
             .add_system(auto_end_level
                 .in_set(OnUpdate(GameState::Complete))
             )
@@ -32,8 +32,9 @@ impl Plugin for GameManagerPlugin {
                 .in_set(OnUpdate(AppState::Playing))
             )
             .add_system(level_complete
-                .in_set(OnUpdate(GameState::InProgress))
                 .in_set(OnUpdate(AppState::Playing))
+                .in_set(OnUpdate(GameState::InProgress))
+                .in_set(OnUpdate(BallState::InPlay))
             )
             .add_system(hud_game_complete.run_if(on_event::<GameCompleteEvent>()))
             .add_system(hud_level_complete.run_if(on_event::<LevelCompletEvent>()))
@@ -70,7 +71,7 @@ impl Default for NewLevelTimer {
     }
 }
 
-fn auto_start_game(
+fn auto_start_first_game(
     mut state: ResMut<NextState<GameState>>,
     mut events: EventWriter<LoadLevelEvent>,
 ) {
@@ -81,6 +82,7 @@ fn auto_start_game(
 
 fn auto_load_next_level (
     mut state: ResMut<NextState<GameState>>,
+    mut ball_state: ResMut<NextState<BallState>>,
     mut events: EventWriter<LoadLevelEvent>,
     mut local: Local<NewLevelTimer>,
     time: Res<Time>,
@@ -88,6 +90,7 @@ fn auto_load_next_level (
 ) {
     if local.timer.tick(time.delta()).finished() {
         state.set(GameState::InProgress);
+        ball_state.set(BallState::Aiming);
         events.send(LoadLevelEvent { level: res.index });
         local.timer.reset();
     }
@@ -116,6 +119,7 @@ fn level_complete(
     mut collisions: EventReader<CollisionEvent>,
     q_entity: Query<Entity, With<Goal>>,
     mut state: ResMut<NextState<GameState>>,
+    mut ball_state: ResMut<NextState<BallState>>,
     mut events: EventWriter<LevelCompletEvent>,
 ) {
     for collision in collisions.iter() {
@@ -126,6 +130,7 @@ fn level_complete(
                     info!("Game over!");
                     events.send(LevelCompletEvent);
                     state.set(GameState::Complete);
+                    ball_state.set(BallState::Hole);
                 }
             },
             CollisionEvent::Stopped(_, _, _) => (),

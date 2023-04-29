@@ -1,6 +1,6 @@
 use std::{fs::File, io::Write};
 use bevy::{prelude::*, tasks::IoTaskPool, math::{Affine3A, Mat3A, Vec3A}};
-use crate::{game::{game_manager::GameState, gameplay_elements::{Goal, self, launcher::Launcher, wall}}, AppState};
+use crate::{game::{game_manager::GameState, gameplay_elements::{goal::Goal, self, launcher::Launcher, wall}}, AppState};
 use crate::game::gameplay_elements::ball::GolfBall;
 
 pub struct LevelManagerPlugin;
@@ -10,9 +10,9 @@ impl Plugin for LevelManagerPlugin {
         app
             .add_event::<SaveLevelEvent>()
             .add_event::<LoadLevelEvent>()
+            .add_system(load_level_system)
             .add_system(save_scene_system.run_if(on_event::<SaveLevelEvent>()))
             // .add_system(load_scene_system.in_schedule(OnEnter(GameState::InProgress)))
-            .add_system(load_scene_system)
             .add_system(clean_up_level.in_schedule(OnExit(GameState::Complete)))
             ;
     }
@@ -44,7 +44,7 @@ pub struct Level;
 const NEW_SCENE_FILE_PATH: &str = "levels/level_1.scn.ron";
 
 // load level
-fn load_scene_system(
+fn load_level_system(
     mut commands: Commands,
     asset_server: Res<AssetServer>,
     mut events: EventReader<LoadLevelEvent>,

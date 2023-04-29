@@ -3,14 +3,26 @@ use bevy_rapier3d::prelude::*;
 
 use crate::{game::GameState, AppState};
 
+#[derive(States, Default, Clone, Eq, PartialEq, Debug, Hash)]
+pub enum BallState {
+    Aiming,
+    InPlay,
+    Hole,
+    Dead,
+    #[default]
+    Disabled,
+}
+
 pub struct GolfBallPlugin;
 
 impl Plugin for GolfBallPlugin {
     fn build(&self, app: &mut App) {
         app
+            .add_state::<BallState>()
             .register_type::<GolfBall>()
             .add_system(golfball_added
                 // .in_set(OnUpdate(GameState::InProgress))
+                // .run_if(not(in_state(BallState::Disabled)))
                 .in_set(OnUpdate(AppState::Playing))
             )
             .add_system(clean_balls.in_schedule(OnExit(GameState::Complete)))

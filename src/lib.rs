@@ -38,7 +38,7 @@ impl Plugin for AppPlugin {
         app.add_state::<AppState>()
             .add_plugin(LoadingPlugin)
             .add_plugin(MenuPlugin)
-            .add_plugin(InternalAudioPlugin)
+            // .add_plugin(InternalAudioPlugin)
             .add_plugin(ActionsPlugin)
             // .add_plugin(PlayerPlugin)
             .add_plugin(InternalCameraPlugin)
