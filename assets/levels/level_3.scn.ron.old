@@ -38,7 +38,7 @@
             z: 1.0,
           ),
         ),
-        "ggolf::game::gameplay_elements::Goal": (),
+        "ggolf::game::gameplay_elements::goal::Goal": (),
       },
     ),
     13: (
