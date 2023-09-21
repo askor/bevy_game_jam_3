@@ -107,7 +107,7 @@ fn launch_ball(
     mut materials: ResMut<Assets<StandardMaterial>>,
     mut ball_state: ResMut<NextState<BallState>>,
 ) {
-    if let Ok((launcher_trans, action_state, entity)) = launcher_q.get_single() {
+    if let Ok((launcher_trans, action_state, launcher_entity)) = launcher_q.get_single() {
         if action_state.just_released(Action::Shoot) {
             // Despawn other balls
             for ball in ball_q.iter() { commands.entity(ball).despawn_recursive(); }
@@ -130,7 +130,7 @@ fn launch_ball(
             launch_event.send(LaunchEvent);
             ball_state.set(BallState::InPlay);
 
-            commands.entity(entity).remove::<Focus>();
+            commands.entity(launcher_entity).remove::<Focus>();
 
             info!("Launch!");
             // Free ball axes
@@ -140,6 +140,7 @@ fn launch_ball(
     }
 }
 
+// TODO Fix me (add list of last positions, or check accel or vel?)
 fn ball_stopped (
     mut commands: Commands,
     ball_q: Query<(Entity, &Transform), With<GolfBall>>,
@@ -150,7 +151,7 @@ fn ball_stopped (
 ) {
     for (ball, transform) in ball_q.iter() {
         // info!("Ball stopped!");
-        if transform.translation.distance_squared(*last_pos) < 0.001 {
+        if transform.translation.distance_squared(*last_pos) < 0.00001 {
             info!("Stopped ball!");
 
             for entity in launcher_q.iter() {
@@ -169,11 +170,6 @@ fn ball_stopped (
     }
 }
 
-
-// Control camera
-
-
-/////////////////////////////////////////////////////////
 
 fn play_launch_sound(
     assets: Res<AudioAssets>,

@@ -23,11 +23,14 @@ impl Plugin for InternalCameraPlugin {
             .add_system(aim_camera
                 .in_set(OnUpdate(AppState::Playing))
             )
-            // .add_system(reset_camera
-            //     .in_set(OnUpdate(AppState::Playing))
-            //     .in_set(OnUpdate(GameState::InProgress))
-            //     .run_if(not(free_cam))
-            // )
+            .add_system(reset_focus
+                .in_set(OnUpdate(AppState::Playing))
+            )
+            .add_system(reset_camera
+                .in_set(OnUpdate(AppState::Playing))
+                .in_set(OnUpdate(GameState::InProgress))
+                .run_if(not(free_cam))
+            )
             // .add_system(toggle_freecam_stuff)
             ;
     }
@@ -61,8 +64,22 @@ fn aim_camera(
     }
 }
 
+
+fn reset_focus(
+    mut commands: Commands,
+    launcher_q: Query<Entity, With<Launcher>>,
+    focus_q: Query<&Focus>,
+) {
+    if let Ok(_) = focus_q.get_single() {
+        return;
+    }
+    for launcher_e in launcher_q.iter() {
+        commands.entity(launcher_e).insert(Focus);
+    }
+}
+
 fn ball_follow_camera(
-    mut query: Query<(&mut Transform, &ActionState<Action>), With<Camera>>,
+    // mut query: Query<(&mut Transform, &ActionState<Action>), With<Camera>>,
     ball_q: Query<&Transform, With<GolfBall>>,
     mut camera_q: Query<&mut LookTransform, With<MainCamera>>,
 ) {
