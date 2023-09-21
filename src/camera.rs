@@ -46,7 +46,7 @@ fn aim_camera(
 
     if let Ok((mut trans, action_state)) = camera_query.get_single_mut() {
         for focus_trans in focus_query.iter() {
-            info!("{:?}", rotation);
+            // info!("{:?}", rotation);
             let axis_pair = action_state.clamped_axis_pair(Action::RotateCamera).unwrap();
     
             rotation.x = sensitivity * -axis_pair.x() + rotation.x;

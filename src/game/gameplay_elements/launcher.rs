@@ -68,8 +68,8 @@ fn launcher_added(
                 action_state: ActionState::default(),
                 input_map: InputMap::default()
                     .insert(DualAxis::left_stick(), Action::Aim)
-                    .insert(VirtualDPad::wasd(), Action::Aim)
-                    // .insert(VirtualDPad::arrow_keys(), Action::Aim)
+                    // .insert(VirtualDPad::wasd(), Action::Aim)
+                    .insert(VirtualDPad::arrow_keys(), Action::Aim)
                     .insert(KeyCode::Space, Action::Shoot)
                     .insert(GamepadButtonType::South, Action::Shoot)
                     .build(),
