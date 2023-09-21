@@ -38,14 +38,14 @@ impl Plugin for AppPlugin {
         app.add_state::<AppState>()
             .add_plugin(LoadingPlugin)
             .add_plugin(MenuPlugin)
-            // .add_plugin(InternalAudioPlugin)
+            .add_plugin(InternalAudioPlugin)
             .add_plugin(ActionsPlugin)
             // .add_plugin(PlayerPlugin)
             .add_plugin(InternalCameraPlugin)
             .add_plugin(EnvironmentPlugin)
             .add_plugin(GamePlugin)
             
-            .add_plugin(ToolsPlugin)
+            // .add_plugin(ToolsPlugin)
             ;
 
         // #[cfg(debug_assertions)]

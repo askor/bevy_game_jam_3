@@ -90,7 +90,7 @@ pub(crate) fn bounce_wall_added(
         commands.entity(entity).insert((
             meshes.add(ground_dims.1),
             materials.add(StandardMaterial {
-                emissive: Color::rgb_linear(1.0, 6.99, 1.0),
+                emissive: Color::rgb_linear(6.99, 6.99, 1.0),
                 ..default()
             }),
             SpatialBundle {
