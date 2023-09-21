@@ -1,8 +1,6 @@
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 
-use crate::AppState;
-
 pub struct PhysicsPlugin;
 
 impl Plugin for PhysicsPlugin {
@@ -15,10 +13,10 @@ impl Plugin for PhysicsPlugin {
     }
 }
 
-fn print_sensor_collison(
-    mut collisions: EventReader<CollisionEvent>,
-) {
-    for collision in collisions.iter() {
-        info!("Collision: {:?}", collision);
-    }
-}
+// fn print_sensor_collison(
+//     mut collisions: EventReader<CollisionEvent>,
+// ) {
+//     for collision in collisions.iter() {
+//         info!("Collision: {:?}", collision);
+//     }
+// }

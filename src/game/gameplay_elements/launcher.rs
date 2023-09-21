@@ -1,6 +1,4 @@
-use std::ops::{Deref, DerefMut};
-
-use bevy::{prelude::*, transform};
+use bevy::prelude::*;
 use bevy_rapier3d::prelude::{LockedAxes, Velocity};
 use leafwing_input_manager::prelude::*;
 
@@ -8,7 +6,7 @@ use crate::camera::{free_cam, Focus};
 use crate::game::level::Level;
 use crate::{actions::Action, game::game_manager::GameState, AppState, loading::AudioAssets};
 
-use super::{create_physical_box};
+use super::create_physical_box;
 use super::ball::{GolfBallBundle, BallState};
 use super::ball::GolfBall;
 
@@ -176,7 +174,7 @@ fn play_launch_sound(
     audio: Res<Audio>,
     // mut sound_index: Local<u8>,
 ) {
-    let mut sound = assets.launch1.clone();
+    let sound = assets.launch1.clone();
     // let sound_count = 4;
 
     // if *sound_index == 0 {

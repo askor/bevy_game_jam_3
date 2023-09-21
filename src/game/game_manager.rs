@@ -1,6 +1,7 @@
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
-use crate::{AppState, loading::FontAssets, menu::ButtonColors};
+use crate::AppState;
+use crate::loading::FontAssets;
 
 use super::{level::level_manager::LoadLevelEvent, gameplay_elements::{goal::Goal, ball::BallState}};
 
@@ -51,12 +52,12 @@ const LEVEL_COUNT: usize = 3;
 #[derive(Resource)]
 struct CurrentLevel {
     index: usize,
-    shots: usize,
+    _shots: usize,
 }
 
 impl Default for CurrentLevel {
     fn default() -> Self {
-        Self { index: 1, shots: 0 }
+        Self { index: 1, _shots: 0 }
     }
 }
 
@@ -168,8 +169,8 @@ struct HudGameStatus;
 fn setup_hud(
     mut commands: Commands,
     fonts: Res<FontAssets>,
-    font_assets: Res<FontAssets>,
-    button_colors: Res<ButtonColors>,
+    // font_assets: Res<FontAssets>,
+    // button_colors: Res<ButtonColors>,
 ) {
     info!("HUD");
     let font = fonts.fira_sans.clone();

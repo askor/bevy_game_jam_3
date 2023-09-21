@@ -4,14 +4,11 @@ pub mod goal;
 pub mod wall;
 pub mod death_zone;
 
-use std::default;
-
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 use crate::AppState;
-use super::game_manager::GameState;
 
-use self::{launcher::Launcher, ball::GolfBallPlugin, death_zone::{DeathZone, cleanup_death_zone, add_death_zone, DeathZonePlugin}, wall::WallPlugin, goal::GoalPlugin};
+use self::{ball::GolfBallPlugin, death_zone::{DeathZone, cleanup_death_zone, add_death_zone, DeathZonePlugin}, wall::WallPlugin, goal::GoalPlugin};
 pub use self::launcher::{LauncherPlugin, LaunchEvent};
 
 pub struct GameplayElementsPlugin;

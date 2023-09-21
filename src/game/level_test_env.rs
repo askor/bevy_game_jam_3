@@ -2,7 +2,7 @@ use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 use crate::AppState;
 use super::gameplay_elements::wall;
-use super::gameplay_elements::{goal::Goal, wall::Box};
+use super::gameplay_elements::goal::Goal;
 use super::gameplay_elements::ball::GolfBall;
 use crate::game::level::Level;
 

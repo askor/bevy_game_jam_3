@@ -1,10 +1,7 @@
 mod dev_ui;
 
 use bevy::prelude::*;
-
 use bevy_inspector_egui::quick::WorldInspectorPlugin;
-use crate::camera::free_cam;
-
 use self::dev_ui::DevUiPlugin;
 
 pub struct ToolsPlugin;

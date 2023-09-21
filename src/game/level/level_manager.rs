@@ -1,6 +1,6 @@
 use std::{fs::File, io::Write};
-use bevy::{prelude::*, tasks::IoTaskPool, math::{Affine3A, Mat3A, Vec3A}};
-use crate::{game::{game_manager::GameState, gameplay_elements::{goal::Goal, self, launcher::Launcher, wall}}, AppState};
+use bevy::{prelude::*, tasks::IoTaskPool};
+use crate::game::{game_manager::GameState, gameplay_elements::{goal::Goal, launcher::Launcher, wall}};
 use crate::game::gameplay_elements::ball::GolfBall;
 
 pub struct LevelManagerPlugin;
@@ -39,9 +39,6 @@ fn clean_up_level(
 #[derive(Component, Reflect, Default)]
 #[reflect(Component)]
 pub struct Level;
-
-// const NEW_SCENE_FILE_PATH: &str = "scenes/load_scene_example-new.scn.ron";
-const NEW_SCENE_FILE_PATH: &str = "levels/level_1.scn.ron";
 
 // load level
 fn load_level_system(
@@ -99,7 +96,7 @@ fn save_scene_system(
     info!("After builder");
 
     let mut query = world.query_filtered::<(Entity, &Children), With<Level>>();
-    let (level_entity, children) = match query.get_single(world) {
+    let (_level_entity, children) = match query.get_single(world) {
         Ok(v) => v,
         Err(_) => return,
     };

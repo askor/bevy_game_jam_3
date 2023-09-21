@@ -1,7 +1,7 @@
 use bevy::{prelude::*, window::PrimaryWindow};
 use bevy_inspector_egui::{egui::{self, Visuals}, bevy_egui::EguiContext};
 
-use crate::{game::{level::{level_manager::SaveLevelEvent, Level}, gameplay_elements::{LaunchEvent, launcher::LaunchVelocity, wall::{LowGravWall, BounceWall, PlainWall, Box}}, GameState}, camera::free_cam};
+use crate::game::{level::{level_manager::SaveLevelEvent, Level}, gameplay_elements::{launcher::LaunchVelocity, wall::{LowGravWall, BounceWall, PlainWall, Box}}, GameState};
 
 pub struct DevUiPlugin;
 

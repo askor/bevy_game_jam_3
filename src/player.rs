@@ -62,8 +62,7 @@ pub struct FlyCam;
 
 /// Grabs/ungrabs mouse cursor
 fn toggle_grab_cursor(
-    // mut primary_query: Query<&mut Window, With<PrimaryWindow>>,
-    mut window: &mut Window,
+    window: &mut Window,
 ) {
     match window.cursor.grab_mode {
         CursorGrabMode::None => {
@@ -129,7 +128,7 @@ fn player_look(
         warn!("Primary window not found for `player_look`!");
         return;
     };
-    let mut delta_state = state.as_mut();
+    let delta_state = state.as_mut();
     for mut transform in query.iter_mut() {
         for ev in delta_state.reader_motion.iter(&motion) {
             match window.cursor.grab_mode {

@@ -13,14 +13,14 @@ use audio::InternalAudioPlugin;
 use camera::InternalCameraPlugin;
 use loading::LoadingPlugin;
 use menu::MenuPlugin;
-use player::PlayerPlugin;
 use environment::EnvironmentPlugin;
 use game::GamePlugin;
-use tools::ToolsPlugin;
+// use player::PlayerPlugin;
+// use tools::ToolsPlugin;
 
 use bevy::app::App;
 #[cfg(debug_assertions)]
-use bevy::diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin};
+// use bevy::diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin};
 use bevy::prelude::*;
 
 #[derive(States, Default, Clone, Eq, PartialEq, Debug, Hash)]
@@ -40,11 +40,11 @@ impl Plugin for AppPlugin {
             .add_plugin(MenuPlugin)
             .add_plugin(InternalAudioPlugin)
             .add_plugin(ActionsPlugin)
-            // .add_plugin(PlayerPlugin)
             .add_plugin(InternalCameraPlugin)
             .add_plugin(EnvironmentPlugin)
             .add_plugin(GamePlugin)
             
+            // .add_plugin(PlayerPlugin)
             // .add_plugin(ToolsPlugin)
             ;
 
