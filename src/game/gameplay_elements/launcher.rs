@@ -2,7 +2,7 @@ use bevy::prelude::*;
 use bevy_rapier3d::prelude::{LockedAxes, Velocity};
 use leafwing_input_manager::prelude::*;
 
-use crate::camera::{free_cam, Focus};
+use crate::camera::Focus;
 use crate::game::level::Level;
 use crate::{actions::Action, game::game_manager::GameState, AppState, loading::AudioAssets};
 
@@ -27,9 +27,8 @@ impl Plugin for LauncherPlugin {
                 .in_set(OnUpdate(AppState::Playing))
             )
             .add_system(play_launch_sound.run_if(on_event::<LaunchEvent>()))
-            .add_system(launch_ball.run_if(not(free_cam)))
+            .add_system(launch_ball)
             .add_system(aim_launcher
-                .run_if(not(free_cam))
                 // .in_set(OnUpdate(BallState::Aiming))
             )
             .add_system(launch_countdown);

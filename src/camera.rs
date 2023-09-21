@@ -108,10 +108,10 @@ fn reset_focus(
 /// Can rotate and zoom out from focus object
 
 
-#[derive(Resource)]
-pub struct FreeCam(bool);
+// #[derive(Resource)]
+// pub struct FreeCam(bool);
 
-pub fn free_cam(res: Res<FreeCam>) -> bool { res.0 }
+// pub fn free_cam(res: Res<FreeCam>) -> bool { res.0 }
 
 // fn toggle_freecam_stuff (
 //     mut commands: Commands,
